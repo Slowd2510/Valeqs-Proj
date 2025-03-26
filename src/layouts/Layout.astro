@@ -1,22 +1,536 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+---
+import { getLanguage, loadTranslations } from '../utils/language.js';
+
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+// Detect user language for every page
+const userLang = await getLanguage(Astro.request);
+const t = await loadTranslations(userLang);
+
+// Define background slideshow images
+const screenshots = [
+  "/images/world1.jpg",
+  "/images/world2.jpg", 
+  "/images/world3.jpg",
+
+].map(path => {
+  // Use a default image URL that's guaranteed to exist
+  const fallbackImage = "https://via.placeholder.com/1920x1080/23272A/99AAB5?text=Valeqs+Minecraft+Server";
+  return { path, fallback: fallbackImage };
+});
+
+// Pass language to client-side JavaScript
+---
+
+<!DOCTYPE html>
+<html lang={userLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>{title}</title>
+    <meta name="description" content="Valeqs Minecraft Server" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Make language available to all pages -->
+    <script define:vars={{userLang}}>
+      window.userLanguage = userLang;
+      document.documentElement.lang = userLang;
+    </script>
+  </head>
+  <body>
+    <!-- Background Slideshow -->
+    <div class="background-slideshow">
+      {screenshots.map((img, index) => (
+        <div 
+          class="slide" 
+          data-index={index} 
+          data-image={img.path.includes('world1') ? 'world1' : ''} 
+          style={`background-image: url(${img.path}), url(${img.fallback})`}
+        ></div>
+      ))}
+      <div class="overlay"></div>
+    </div>
+    
+    <slot />
+    
+    <script>
+      // Background Slideshow Functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        
+        // Initialize: hide all slides except the first one
+        slides.forEach((slide, index) => {
+          if (index !== 0) {
+            slide.classList.add('inactive');
+          }
+        });
+        
+        function rotateSlides() {
+          // Fade out current slide
+          slides[currentSlide].classList.add('fade-out');
+          
+          setTimeout(() => {
+            // Hide current slide
+            slides[currentSlide].classList.add('inactive');
+            slides[currentSlide].classList.remove('fade-out');
+            
+            // Move to next slide
+            currentSlide = (currentSlide + 1) % slides.length;
+            
+            // Show and fade in next slide
+            slides[currentSlide].classList.remove('inactive');
+            slides[currentSlide].classList.add('fade-in');
+            
+            setTimeout(() => {
+              slides[currentSlide].classList.remove('fade-in');
+            }, 1500);
+          }, 1500);
+        }
+        
+        // Rotate slides every 15 seconds (extended from 8 seconds)
+        setInterval(rotateSlides, 15000);
+      });
+    </script>
+  </body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+<style is:global>
+  /* Base Cyberpunk Theme Variables */
+  :root {
+    /* Main colors */
+    --primary: #00FFBB;
+    --secondary: #7B53FF;
+    --tertiary: #FF427A;
+    --dark: #0A0E17;
+    --darker: #070A0F;
+    --light: #E7ECEF;
+    --mid: #8A9BAE;
+    
+    /* Accent colors */
+    --accent1: #00FFBB;
+    --accent2: #7B53FF;
+    --accent3: #FF427A;
+    --accent4: #3AEBFF;
+    
+    /* Rank colors */
+    --vip-color: #55FF55;
+    --mvp-color: #5555FF;
+    --legend-color: #FFAA00;
+    
+    /* Sizing */
+    --container-width: 1400px;
+  }
+  
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Base Elements */
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Rajdhani', sans-serif;
+ 
+    color: var(--light);
+    overflow-x: hidden;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    position: relative;
+  }
+  
+  /* Container */
+  .site-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    z-index: 2;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1rem;
+    margin-bottom: 1rem;
+    color: var (--light);
+  }
+  
+  h1 {
+    font-size: 3.5rem;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+  }
+  
+  h3 {
+    font-size: 1.8rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+  }
+  
+  a {
+    color: var(--accent1);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: var(--accent4);
+  }
+  
+  /* Tech background lines */
+  .tech-lines-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  
+  .horizontal-line {
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--accent1), transparent);
+    opacity: 0.07;
+  }
+  
+  .horizontal-line:nth-child(1) {
+    top: 20%;
+    animation: line-float 15s infinite ease-in-out;
+  }
+  
+  .horizontal-line:nth-child(2) {
+    top: 50%;
+    animation: line-float 18s infinite ease-in-out reverse;
+    animation-delay: 2s;
+  }
+  
+  .horizontal-line:nth-child(3) {
+    top: 80%;
+    animation: line-float 20s infinite ease-in-out;
+    animation-delay: 4s;
+  }
+  
+  .vertical-line {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(0deg, transparent, var(--accent2), transparent);
+    opacity: 0.05;
+  }
+  
+  .vertical-line:nth-child(4) {
+    left: 30%;
+    animation: line-float-vertical 25s infinite ease-in-out;
+  }
+  
+  .vertical-line:nth-child(5) {
+    left: 70%;
+    animation: line-float-vertical 30s infinite ease-in-out reverse;
+    animation-delay: 5s;
+  }
+  
+  /* Common components styling */
+  .section-container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .section-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.2rem;
+  }
+  
+  .section-divider {
+    height: 3px;
+    width: 80px;
+    background: linear-gradient(90deg, transparent, var(--accent1), transparent);
+    margin: 0.5rem auto;
+  }
+  
+  /* Button styles */
+  .tech-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+  }
+  
+  .tech-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+  
+  .tech-button:hover::before {
+    transform: translateX(100%);
+  }
+  
+  .tech-button.primary {
+    background-color: var(--accent1);
+    color: var(--dark);
+    box-shadow: 0 0 15px rgba(0, 255, 187, 0.5);
+  }
+  
+  .tech-button.secondary {
+    background-color: var(--accent2);
+    color: white;
+    box-shadow: 0 0 15px rgba(123, 83, 255, 0.5);
+  }
+  
+  .tech-button.tertiary {
+    background-color: var(--accent3);
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 66, 122, 0.5);
+  }
+  
+  .tech-button.outline {
+    background-color: transparent;
+    border: 2px solid var(--accent1);
+    color: var(--accent1);
+  }
+  
+  .tech-button.outline:hover {
+    background-color: var(--accent1);
+    color: var(--dark);
+  }
+  
+  /* Card styling */
+  .tech-card {
+    background-color: rgba(15, 20, 30, 0.8);
+    border: 1px solid rgba(123, 83, 255, 0.3);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .tech-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent1);
+  }
+  
+  /* Utility classes */
+  .text-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 187, 0.5);
+  }
+  
+  .text-accent {
+    color: var(--accent1);
+  }
+  
+  .text-mono {
+    font-family: 'Share Tech Mono', monospace;
+  }
+  
+  /* Animations */
+  @keyframes line-float {
+    0%, 100% {
+      transform: translateX(-10%);
+    }
+    50% {
+      transform: translateX(10%);
+    }
+  }
+  
+  @keyframes line-float-vertical {
+    0%, 100% {
+      transform: translateY(-10%);
+    }
+    50% {
+      transform: translateY(10%);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.8s ease forwards;
+    opacity: 0;
+  }
+  
+  .slide-up {
+    animation: slideUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .pulse {
+    animation: pulse 2s infinite ease-in-out;
+  }
+  
+  /* Background Slideshow */
+  .background-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+  
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1.5s ease;
+  }
+  
+  .slide.inactive {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .slide.fade-in {
+    animation: fadeIn 1.5s forwards;
+  }
+  
+  .slide.fade-out {
+    animation: fadeOut 1.5s forwards;
+  }
+
+  .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(7, 10, 15, 0.78);
+  z-index: -1;
+}
+  
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  
+  .slide[data-image="world1"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); 
+    z-index: 1;
+  }
+  
+  
+  @media (max-width: 1024px) {
+    .section-container {
+      padding: 0 1.5rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.8rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+    }
+    
+    .section-container {
+      padding: 0 1rem;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.2rem;
+    }
+    
+    h2 {
+      font-size: 1.8rem;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+    }
+  }
 </style>

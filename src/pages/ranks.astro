@@ -1,0 +1,1235 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+
+// Product data
+const products = [
+  {
+    id: "premium",
+    name: "Premium",
+    price: 5,
+    period: "monthly",
+    color: "#99AAB5",
+    description: "Basic premium membership.",
+    features: [
+      "3x /sethome",
+      "3x /claim",
+      "Warteschlange überspringen, wenn der Server voll ist",
+      "Prefix [Pre]"
+    ],
+    popular: false
+  },
+  {
+    id: "king",
+    name: "King",
+    price: 10,
+    period: "monthly",
+    color: "#FFA500", 
+    description: "Advanced membership with more features.",
+    features: [
+      "7x /sethome",
+      "7x /claim", 
+      "Warteschlange überspringen, wenn der Server voll ist",
+      "KING Rang [KING]"
+    ],
+    popular: true
+  }
+];
+
+// FAQ items
+const faqItems = [
+  {
+    question: "How do I activate my rank after purchase?",
+    answer: "Your rank will be automatically activated within 2 minutes after a successful purchase. If you experience any issues, please contact our support team on Discord."
+  },
+  {
+    question: "Can I upgrade my rank later?",
+    answer: "Yes! You can upgrade to a higher rank at any time and only pay the difference between your current rank and the new one."
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer: "We accept credit/debit cards, PayPal, and various cryptocurrencies through our payment provider."
+  },
+  {
+    question: "Are purchases permanent?",
+    answer: "Yes, all rank purchases are permanent and will not expire unless otherwise specified."
+  }
+];
+---
+
+<Layout title="Valeqs - Premium Ranks">
+  <div class="page-container">
+    <!-- Navigation -->
+    <Navbar activePage="ranks" />
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Premium Ranks</h1>
+        <p>Unlock exclusive perks on the Valeqs server.</p>
+      </div>
+    </section>
+    
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+      <div class="products-container">
+        {products.map((product) => (
+          <div class={`product-card ${product.popular ? 'popular' : ''}`}>
+            {product.popular && <div class="popular-badge">POPULAR</div>}
+            
+            <div class="card-inner">
+              <div class="card-header">
+                <h2 class="product-name">{product.name}</h2>
+                
+                <div class="price-tag">
+                  <span class="price-value">{product.price}€</span>
+                  <span class="price-period">/{product.period}</span>
+                </div>
+              </div>
+              
+              <div class="card-body">
+                <p class="product-description">{product.description}</p>
+                
+                <ul class="features-list">
+                  {product.features.map((feature) => (
+                    <li class="feature-item">
+                      <span class="feature-icon">•</span>
+                      <span class="feature-text">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div class="card-footer">
+                <button class="purchase-button" data-product={product.id} data-name={product.name} data-price={product.price}>
+                  Purchase {product.name}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2 class="section-title">FAQ</h2>
+      
+      <div class="faq-container">
+        {faqItems.map((item, index) => (
+          <div class="faq-item" data-index={index}>
+            <div class="faq-question">
+              <h3>{item.question}</h3>
+              <div class="faq-icon">+</div>
+            </div>
+            
+            <div class="faq-answer">
+              <p>{item.answer}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <span>© 2025 VALEQS</span>
+          <span>Not affiliated with Mojang</span>
+        </div>
+        
+        <div class="footer-links">
+          <a href="/terms">Terms</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/rules">Rules</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Minecraft Username Modal -->
+  <div id="purchase-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-container">
+      <button class="modal-close" aria-label="Close modal">×</button>
+      
+      <div class="modal-steps">
+        <div class="step active" data-step="1">1</div>
+        <div class="step-connector"></div>
+        <div class="step" data-step="2">2</div>
+        <div class="step-connector"></div>
+        <div class="step" data-step="3">3</div>
+      </div>
+      
+      <!-- Step 1: Enter Minecraft Username -->
+      <div class="modal-content" data-step="1">
+        <div class="modal-header">
+          <h3 class="modal-title">Enter your Minecraft username</h3>
+          <p class="modal-subtitle">We'll use this to assign your <span class="product-name-placeholder">Premium</span> rank.</p>
+        </div>
+        
+        <div class="modal-body">
+          <div class="modal-product-info">
+            <div class="selected-product">
+              <span class="selected-label">Selected rank:</span>
+              <span class="selected-value product-name-placeholder">Premium</span>
+            </div>
+            <div class="selected-price">
+              <span class="selected-label">Price:</span>
+              <span class="selected-value">€<span class="product-price-placeholder">5</span></span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="minecraft-username">Minecraft Username</label>
+            <input type="text" id="minecraft-username" name="minecraft-username" placeholder="Your in-game name" required>
+            <div class="input-error" id="username-error"></div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button class="modal-button secondary modal-close-btn">Cancel</button>
+          <button class="modal-button primary" id="continue-to-confirmation" disabled>Continue</button>
+        </div>
+      </div>
+      
+      <!-- Step 2: Confirm Minecraft Account -->
+      <div class="modal-content hidden" data-step="2">
+        <div class="modal-header">
+          <h3 class="modal-title">Confirm your Minecraft account</h3>
+          <p class="modal-subtitle">Is this your character?</p>
+        </div>
+        
+        <div class="modal-body">
+          <div class="minecraft-character">
+            <div class="character-skin">
+              <img id="skin-head" src="" alt="Your Minecraft skin">
+              <div class="skin-loading">
+                <div class="spinner"></div>
+              </div>
+            </div>
+            <div class="character-name" id="minecraft-name-display">Username</div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button class="modal-button secondary" id="back-to-username">No, go back</button>
+          <button class="modal-button primary" id="confirm-character">Yes, this is me</button>
+        </div>
+      </div>
+      
+      <!-- Step 3: Redirect to Payment -->
+      <div class="modal-content hidden" data-step="3">
+        <div class="modal-header">
+          <h3 class="modal-title">Redirecting to payment</h3>
+          <p class="modal-subtitle">Please wait while we redirect you to our secure payment page.</p>
+        </div>
+        
+        <div class="modal-body">
+          <div class="redirect-loading">
+            <div class="spinner large"></div>
+            <p>Preparing your order...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // FAQ Toggle Functionality
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      const icon = item.querySelector('.faq-icon');
+      
+      question.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        
+        // Close all FAQ items
+        faqItems.forEach(faq => {
+          faq.classList.remove('active');
+          faq.querySelector('.faq-icon').textContent = '+';
+        });
+        
+        // Toggle current item
+        if (!isActive) {
+          item.classList.add('active');
+          icon.textContent = '-';
+        }
+      });
+    });
+    
+    // Purchase Modal Functionality
+    // Modal elements
+    const modal = document.getElementById('purchase-modal');
+    const modalClose = document.querySelectorAll('.modal-close, .modal-close-btn');
+    const purchaseButtons = document.querySelectorAll('.purchase-button');
+    
+    // Step navigation elements
+    const stepIndicators = document.querySelectorAll('.modal-steps .step');
+    const modalContents = document.querySelectorAll('.modal-content');
+    
+    // Step 1: Username input
+    const minecraftUsernameInput = document.getElementById('minecraft-username');
+    const usernameError = document.getElementById('username-error');
+    const continueToConfirmButton = document.getElementById('continue-to-confirmation');
+    
+    // Step 2: Confirmation
+    const skinHead = document.getElementById('skin-head');
+    const skinLoading = document.querySelector('.skin-loading');
+    const minecraftNameDisplay = document.getElementById('minecraft-name-display');
+    const backToUsernameButton = document.getElementById('back-to-username');
+    const confirmCharacterButton = document.getElementById('confirm-character');
+    
+    // Product details placeholders
+    const productNamePlaceholders = document.querySelectorAll('.product-name-placeholder');
+    const productPricePlaceholder = document.querySelector('.product-price-placeholder');
+    
+    // Current selected product
+    let selectedProduct = {
+      id: '',
+      name: '',
+      price: 0
+    };
+    
+    // Open modal when a purchase button is clicked
+    purchaseButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Store selected product details
+        selectedProduct = {
+          id: button.dataset.product,
+          name: button.dataset.name,
+          price: button.dataset.price
+        };
+        
+        // Update placeholder text
+        productNamePlaceholders.forEach(el => {
+          el.textContent = selectedProduct.name;
+        });
+        
+        if (productPricePlaceholder) {
+          productPricePlaceholder.textContent = selectedProduct.price;
+        }
+        
+        // Show modal and go to step 1
+        showStep(1);
+        if (modal) {
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
+          
+          // Focus on username input
+          setTimeout(() => {
+            if (minecraftUsernameInput) {
+              minecraftUsernameInput.focus();
+            }
+          }, 100);
+        }
+      });
+    });
+    
+    // Close modal
+    modalClose.forEach(closeBtn => {
+      closeBtn.addEventListener('click', () => {
+        closeModal();
+      });
+    });
+    
+    // Close modal when clicking outside
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    }
+    
+    // Close with ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+    
+    // Function to close modal
+    function closeModal() {
+      if (modal) {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        
+        // Reset form
+        setTimeout(() => {
+          resetForm();
+        }, 300);
+      }
+    }
+    
+    // Reset form state
+    function resetForm() {
+      if (minecraftUsernameInput) {
+        minecraftUsernameInput.value = '';
+      }
+      
+      if (usernameError) {
+        usernameError.textContent = '';
+      }
+      
+      if (continueToConfirmButton) {
+        continueToConfirmButton.disabled = true;
+      }
+      
+      showStep(1);
+    }
+    
+    // Show a specific step
+    function showStep(stepNumber) {
+      // Update step indicators
+      stepIndicators.forEach(step => {
+        const stepNum = parseInt(step.dataset.step);
+        
+        if (stepNum < stepNumber) {
+          step.classList.remove('active');
+          step.classList.add('completed');
+        } else if (stepNum === stepNumber) {
+          step.classList.add('active');
+          step.classList.remove('completed');
+        } else {
+          step.classList.remove('active', 'completed');
+        }
+      });
+      
+      // Show the correct content panel
+      modalContents.forEach(content => {
+        const contentStep = parseInt(content.dataset.step);
+        
+        if (contentStep === stepNumber) {
+          content.classList.remove('hidden');
+        } else {
+          content.classList.add('hidden');
+        }
+      });
+    }
+    
+    // Username input validation
+    if (minecraftUsernameInput) {
+      minecraftUsernameInput.addEventListener('input', () => {
+        const username = minecraftUsernameInput.value.trim();
+        
+        // Minecraft username validation (3-16 characters, only letters, numbers, and underscore)
+        const isValid = /^[a-zA-Z0-9_]{3,16}$/.test(username);
+        
+        if (username === '') {
+          usernameError.textContent = '';
+          continueToConfirmButton.disabled = true;
+        } else if (!isValid) {
+          usernameError.textContent = 'Username should be 3-16 characters and contain only letters, numbers, and underscores.';
+          continueToConfirmButton.disabled = true;
+        } else {
+          usernameError.textContent = '';
+          continueToConfirmButton.disabled = false;
+        }
+      });
+    }
+    
+    // Continue to confirmation step
+    if (continueToConfirmButton) {
+      continueToConfirmButton.addEventListener('click', () => {
+        const username = minecraftUsernameInput.value.trim();
+        
+        if (username) {
+          // Show loading state
+          if (skinLoading) {
+            skinLoading.classList.add('active');
+          }
+          
+          // Update character name display
+          if (minecraftNameDisplay) {
+            minecraftNameDisplay.textContent = username;
+          }
+          
+          // Load Minecraft head
+          if (skinHead) {
+            // Set empty src first to ensure onload fires even if same name entered twice
+            skinHead.src = '';
+            
+            // Add random timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            skinHead.src = `https://mc-heads.net/avatar/${username}/${100}?timestamp=${timestamp}`;
+            
+            // Handle image load
+            skinHead.onload = () => {
+              if (skinLoading) {
+                skinLoading.classList.remove('active');
+              }
+              
+              // Progress to confirmation step
+              showStep(2);
+            };
+            
+            // Handle image error
+            skinHead.onerror = () => {
+              if (skinLoading) {
+                skinLoading.classList.remove('active');
+              }
+              
+              // Still progress to confirmation step, just with default image
+              showStep(2);
+            };
+          } else {
+            showStep(2);
+          }
+        }
+      });
+    }
+    
+    // Go back to username step
+    if (backToUsernameButton) {
+      backToUsernameButton.addEventListener('click', () => {
+        showStep(1);
+      });
+    }
+    
+    // Confirm character and proceed to payment
+    if (confirmCharacterButton) {
+      confirmCharacterButton.addEventListener('click', () => {
+        const username = minecraftUsernameInput.value.trim();
+        
+        showStep(3);
+        
+        // Construct the Tebex URL with parameters
+        const tebexUrl = `https://checkout.tebex.io/checkout/valeqs?package=${selectedProduct.id}&username=${encodeURIComponent(username)}`;
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          window.location.href = tebexUrl;
+        }, 1500);
+      });
+    }
+  });
+</script>
+
+<style>
+  /* Clean, modern styles with normal typography */
+  :root {
+    /* Discord-inspired colors but slightly softer */
+    --background: #23272A;
+    --bg-secondary: #2C2F33;
+    --bg-light: #36393F;
+    
+    /* Text colors */
+    --text-normal: #DCDDDE;
+    --text-muted: #8e9297;
+    --text-heading: #FFFFFF;
+    
+    /* Button colors */
+    --button-primary: #5865F2; /* Discord blurple */
+    --button-primary-hover: #4752c4;
+    --button-secondary: #4f545c;
+    --button-secondary-hover: #5d6269;
+    
+    /* Other colors */
+    --premium-color: #99AAB5;
+    --king-color: #FFA500;
+    --error-color: #F04747;
+    
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--text-normal);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+  }
+  
+  /* Page Container */
+  .page-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    padding: 3rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+    color: var(--text-heading);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  
+  .hero-content p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Products Section */
+  .products-section {
+    margin-bottom: 4rem;
+  }
+  
+  .products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .product-card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--bg-secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  }
+  
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  
+  .product-card.popular {
+    border: 2px solid var(--king-color);
+  }
+  
+  .popular-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: var(--king-color);
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+  }
+  
+  .card-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-header {
+    padding: 1.75rem 1.5rem;
+    background-color: var(--bg-light);
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .product-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin: 0 0 1rem 0;
+  }
+  
+  .popular .product-name {
+    color: var(--king-color);
+  }
+  
+  .price-tag {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  
+  .price-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    line-height: 1;
+  }
+  
+  .popular .price-value {
+    color: var(--king-color);
+  }
+  
+  .price-period {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+  
+  .card-body {
+    padding: 1.75rem 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .product-description {
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  .features-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .feature-icon {
+    color: var(--king-color);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  
+  .feature-text {
+    color: var(--text-normal);
+    font-size: 0.95rem;
+  }
+  
+  .card-footer {
+    padding: 1.5rem;
+    background-color: var(--bg-light);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .purchase-button {
+    display: block;
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--button-primary);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+  
+  .popular .purchase-button {
+    background-color: var(--king-color);
+    color: #000;
+  }
+  
+  .purchase-button:hover {
+    background-color: var(--button-primary-hover);
+    transform: translateY(-2px);
+  }
+  
+  .popular .purchase-button:hover {
+    background-color: #ffb224;
+  }
+  
+  /* FAQ Section */
+  .faq-section {
+    margin-bottom: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+    color: var(--text-heading);
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 700;
+  }
+  
+  .faq-container {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .faq-item {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: box-shadow var(--transition-normal);
+  }
+  
+  .faq-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .faq-question {
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .faq-question h3 {
+    font-size: 1.1rem;
+    color: var(--text-heading);
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .faq-icon {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    transition: transform var(--transition-fast);
+  }
+  
+  .faq-item.active .faq-icon {
+    transform: rotate(45deg);
+  }
+  
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-normal);
+  }
+  
+  .faq-item.active .faq-answer {
+    max-height: 500px;
+  }
+  
+  .faq-answer p {
+    padding: 0 1.25rem 1.25rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Footer */
+  .site-footer {
+    margin-top: auto;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .footer-info {
+    display: flex;
+    flex-direction: column;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    gap: 0.25rem;
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color var(--transition-fast);
+  }
+  
+  .footer-links a:hover {
+    color: var(--text-normal);
+  }
+  
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+  }
+  
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .modal-container {
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    width: 95%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+    transform: scale(0.95);
+    transition: transform var(--transition-normal);
+  }
+  
+  .modal-overlay.active .modal-container {
+    transform: scale(1);
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
+    line-height: 0;
+    padding: 0;
+  }
+  
+  .modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-normal);
+  }
+  
+  /* Steps Indicator */
+  .modal-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1.5rem 1rem;
+  }
+  
+  .step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all var(--transition-normal);
+  }
+  
+  .step.active {
+    background-color: var(--button-primary);
+    border-color: var(--button-primary);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.2);
+  }
+  
+  .step.completed {
+    background-color: #43B581;
+    border-color: #43B581;
+    color: #fff;
+  }
+  
+  .step-connector {
+    flex-grow: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    max-width: 70px;
+  }
+  
+  .step.completed + .step-connector {
+    background: #43B581;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    padding: 0 1.75rem 1.75rem;
+  }
+  
+  .modal-content.hidden {
+    display: none;
+  }
+  
+  .modal-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
+  
+  .modal-title {
+    font-size: 1.4rem;
+    color: var(--text-heading);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  
+  .modal-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+  
+  .modal-body {
+    margin-bottom: 1.75rem;
+  }
+  
+  .modal-product-info {
+    background: var(--bg-secondary);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    border-radius: var(--radius-md);
+  }
+  
+  .selected-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+  }
+  
+  .selected-value {
+    font-weight: 600;
+    color: var(--text-normal);
+  }
+  
+  /* Form styles */
+  .form-group {
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--text-normal);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    color: var(--text-normal);
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color var(--transition-fast);
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--button-primary);
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.25);
+  }
+  
+  .input-error {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    min-height: 1.2rem;
+  }
+  
+  /* Minecraft Character Preview */
+  .minecraft-character {
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+  
+  .character-skin {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 1rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  
+  .character-skin img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    transition: transform var(--transition-normal);
+  }
+  
+  .character-skin:hover img {
+    transform: scale(1.05);
+  }
+  
+  .skin-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+  }
+  
+  .skin-loading.active {
+    opacity: 1;
+  }
+  
+  .character-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--text-heading);
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Loading Spinner */
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--button-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .spinner.large {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Redirect Loading */
+  .redirect-loading {
+    text-align: center;
+    padding: 2rem 0;
+  }
+  
+  .redirect-loading .spinner {
+    margin: 0 auto 1.5rem;
+  }
+  
+  .redirect-loading p {
+    color: var(--text-normal);
+  }
+  
+  /* Modal Footer */
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+  
+  .modal-button {
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+  
+  .modal-button.primary {
+    background-color: var(--button-primary);
+    color: #fff;
+  }
+  
+  .modal-button.primary:hover:not(:disabled) {
+    background-color: var(--button-primary-hover);
+    transform: translateY(-2px);
+  }
+  
+  .modal-button.primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .modal-button.secondary {
+    background-color: var(--button-secondary);
+    color: var(--text-normal);
+  }
+  
+  .modal-button.secondary:hover {
+    background-color: var(--button-secondary-hover);
+    transform: translateY(-2px);
+  }
+  
+  /* Mobile Optimizations */
+  @media (max-width: 580px) {
+    .modal-container {
+      width: 95%;
+      border-radius: var(--radius-md);
+    }
+    
+    .modal-product-info {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .modal-footer {
+      flex-direction: column;
+    }
+    
+    .modal-button {
+      width: 100%;
+    }
+    
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    
+    .footer-links {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>

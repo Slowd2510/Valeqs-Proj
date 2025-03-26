@@ -1,0 +1,229 @@
+{
+  "navigation": {
+    "home": "Startseite",
+    "info": "Info",
+    "contact": "Kontakt",
+    "ranks": "Ränge"
+  },
+  "features": {
+    "survival": {
+      "title": "Vanilla Survival",
+      "description": "Erlebe Minecraft, wie es gedacht war, mit minimalen Plugins, die nicht in die Kern-Spielmechaniken eingreifen."
+    },
+    "economy": {
+      "title": "Spieler-Wirtschaft",
+      "description": "Handle mit anderen Spielern über unser ausgewogenes Wirtschaftssystem mit Spieler-Shops und Währung."
+    },
+    "towny": {
+      "title": "Stadt-System",
+      "description": "Gründe Städte mit anderen Spielern, um deine Bauten zu schützen und an großen Projekten zusammenzuarbeiten."
+    },
+    "mcmmo": {
+      "title": "Fertigkeiten & Leveln",
+      "description": "Steigere verschiedene Fertigkeiten wie Bergbau, Holzfällen und Kampf, um spezielle Fähigkeiten und Vorteile freizuschalten."
+    },
+    "customEnchants": {
+      "title": "Benutzerdefinierte Verzauberungen",
+      "description": "Entdecke einzigartige Verzauberungen, die über das Vanilla-Spiel hinausgehen und neue Möglichkeiten bieten, deine Ausrüstung zu verbessern."
+    },
+    "customEvents": {
+      "title": "Community-Events",
+      "description": "Nimm an regelmäßigen Server-Events mit einzigartigen Herausforderungen und Preisen für die Gewinner teil."
+    }
+  },
+  "server": {
+    "status": "Online",
+    "players": "Spieler",
+    "joinServer": "SERVER BEITRETEN",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "uptime": "Betriebszeit",
+    "serverInfo": "SERVER INFO"
+  },
+  "serverDescription": "Valeqs ist ein Minecraft-Survival-Server mit minimalen Regeln. Baue, erkunde und überlebe in einer herausfordernden Welt. Unser Server bietet Landansprüche, Teleports und Lebensqualitätsverbesserungen, während die Vanilla-Erfahrung erhalten bleibt.",
+  "serverDetails": {
+    "worldBorder": "Weltgrenze",
+    "worldBorderValue": "30.000 x 30.000",
+    "mapReset": "Kartenreset",
+    "mapResetValue": "Nie (Seit 2023)",
+    "difficulty": "Schwierigkeit",
+    "difficultyValue": "Schwer"
+  },
+  "discord": "Unserem Discord beitreten",
+  "news": {
+    "latestNews": "NEUESTE NACHRICHTEN",
+    "readMore": "Weiterlesen"
+  },
+  "footer": {
+    "copyright": "© 2025 VALEQS",
+    "disclaimer": "Nicht mit Mojang verbunden",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutz",
+    "rules": "Regeln"
+  },
+  "errors": {
+    "pageNotFound": "Seite nicht gefunden",
+    "goHome": "Zurück zur Startseite"
+  },
+  "info": {
+    "title": "Server Informationen",
+    "subtitle": "Alles was du wissen musst",
+    "welcome": "Willkommen bei Valeqs",
+    "welcomeText1": "Tritt unserer Minecraft-Community bei für ein immersives Survival-Erlebnis. Valeqs bietet ein ausgewogenes Spielerlebnis mit minimalen Regeln und gibt dir die Freiheit zu bauen, zu erkunden und dich mit anderen Spielern zu verbinden.",
+    "welcomeText2": "Unser Server läuft seit 2023 auf dedizierter Hardware mit 99,9% Betriebszeit, um das bestmögliche Erlebnis für alle Spieler zu gewährleisten.",
+    "serverAddress": "Server-Adresse",
+    "howToJoin": "Wie du beitrittst",
+    "onlinePlayers": "Online Spieler",
+    "registeredPlayers": "Registrierte Spieler",
+    "serverUptime": "Server-Betriebszeit",
+    "featuresTitle": "SERVER-FUNKTIONEN",
+    "serverSpecifications": "SERVER-SPEZIFIKATIONEN",
+    "serverRules": "SERVER-REGELN",
+    "rulesNote": "Diese Regeln werden durchgesetzt, um eine unterhaltsame und faire Umgebung für alle zu gewährleisten. Verstöße gegen diese Regeln können je nach Schwere und Häufigkeit zu Verwarnungen, temporären oder permanenten Sperren führen.",
+    "staffTeam": "TEAM",
+    "howToJoinSection": "WIE DU BEITRITTST",
+    "joinDiscord": "Tritt unserer Discord-Community bei",
+    "joinDiscordText": "Verbinde dich mit anderen Spielern, erhalte Server-Updates und nimm an Community-Events teil, indem du unserem Discord-Server beitrittst. Es ist auch der beste Ort, um Hilfe zu bekommen, wenn du Probleme beim Verbinden mit dem Server hast."
+  },
+  "serverSpecs": {
+    "hardware": {
+      "label": "Hardware",
+      "value": "Dedizierter Server, 32GB RAM, Ryzen 9 5900X"
+    },
+    "uptime": {
+      "label": "Betriebszeit",
+      "value": "99,9%"
+    },
+    "location": {
+      "label": "Server-Standort",
+      "value": "Frankfurt, Deutschland"
+    },
+    "version": {
+      "label": "Minecraft-Version",
+      "value": "Java 1.20.4"
+    },
+    "slots": {
+      "label": "Spieler-Slots",
+      "value": "250"
+    },
+    "antiCheat": {
+      "label": "Anti-Cheat",
+      "value": "Eigene Lösung"
+    }
+  },
+  "rules": {
+    "respectful": {
+      "title": "Sei Respektvoll",
+      "description": "Behandle alle Spieler mit Respekt. Belästigung, Hassrede und übermäßige Toxizität werden nicht toleriert."
+    },
+    "noGriefing": {
+      "title": "Kein Griefing",
+      "description": "Das Zerstören oder Verändern der Bauwerke anderer Spieler ohne Erlaubnis ist streng verboten."
+    },
+    "noCheating": {
+      "title": "Kein Cheating",
+      "description": "Hacks, Exploits oder jegliche unfaire Vorteile, die das Spielerlebnis stören, sind verboten."
+    },
+    "pvpGuidelines": {
+      "title": "PvP-Richtlinien",
+      "description": "PvP ist erlaubt, aber nur in ausgewiesenen Bereichen. Kein Spawn-Killing oder übermäßiges Anvisieren neuer Spieler."
+    },
+    "appropriateBuilds": {
+      "title": "Angemessene Bauwerke",
+      "description": "Halte deine Bauwerke angemessen. Keine anstößigen Strukturen oder unangemessene Pixel-Art."
+    },
+    "staffDecisions": {
+      "title": "Team-Entscheidungen",
+      "description": "Respektiere die Entscheidungen des Teams. Bei Problemen nutze bitte den Einspruchsprozess in unserem Discord."
+    }
+  },
+  "staffRoles": {
+    "owner": "Eigentümer",
+    "administrators": "Administratoren",
+    "moderators": "Moderatoren",
+    "helpers": "Helfer"
+  },
+  "joinSteps": {
+    "step1": {
+      "title": "Hole dir Minecraft Java Edition",
+      "description": "Stelle sicher, dass du Minecraft Java Edition (Version 1.20.4) auf deinem Computer installiert hast."
+    },
+    "step2": {
+      "title": "Starte Minecraft",
+      "description": "Öffne Minecraft, klicke im Hauptmenü auf 'Mehrspieler', dann auf 'Server hinzufügen'."
+    },
+    "step3": {
+      "title": "Gib die Server-Adresse ein",
+      "description": "Tippe 'valeqs.de' in das Feld für die Server-Adresse ein und klicke auf 'Fertig'."
+    },
+    "step4": {
+      "title": "Tritt bei und hab Spaß",
+      "description": "Klicke in deiner Serverliste auf den Server und genieße dein Abenteuer auf Valeqs!"
+    }
+  },
+  "contact": {
+    "title": "Kontakt - Valeqs Minecraft Server",
+    "heroTitle": "Nimm <span class=\"highlight\">Kontakt</span> auf",
+    "heroSubtitle": "Wir freuen uns von dir zu hören! Melde dich bei Fragen, Feedback oder wenn du Unterstützung benötigst.",
+    "form": {
+      "title": "Sende uns eine Nachricht",
+      "name": "Name",
+      "namePlaceholder": "Dein Name",
+      "email": "E-Mail",
+      "emailPlaceholder": "deine@email.de",
+      "subject": "Betreff",
+      "subjectSelect": "Betreff auswählen",
+      "subjects": {
+        "general": "Allgemeine Anfrage",
+        "support": "Spieler-Support",
+        "feedback": "Feedback",
+        "report": "Spieler melden",
+        "bug": "Bug melden",
+        "business": "Geschäftliche Anfrage"
+      },
+      "message": "Nachricht",
+      "messagePlaceholder": "Deine Nachricht hier...",
+      "captcha": "Ich bin kein Roboter",
+      "send": "Nachricht senden",
+      "sent": "Nachricht gesendet!"
+    },
+    "discord": {
+      "title": "Tritt unserem Discord bei",
+      "description": "Werde Teil unserer aktiven Community! Erhalte sofortige Unterstützung, finde Mitspieler und bleibe über alle Server-Events informiert.",
+      "members": "Mitglieder",
+      "online": "Online",
+      "joinButton": "Server beitreten"
+    },
+    "social": {
+      "discord": {
+        "name": "Discord",
+        "label": "Tritt unserem Discord-Server bei"
+      },
+      "email": {
+        "name": "E-Mail",
+        "label": "Schreib uns eine E-Mail"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "label": "Folge uns auf Twitter"
+      }
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "items": [
+        {
+          "question": "Wie lange dauert es, bis ich eine Antwort bekomme?",
+          "answer": "Wir antworten in der Regel innerhalb von 24-48 Stunden an Wochentagen. Für eine schnellere Antwort empfehlen wir unseren Discord-Server beizutreten."
+        },
+        {
+          "question": "Ich habe einen Bug im Spiel gefunden. Wo kann ich diesen melden?",
+          "answer": "Bugs werden am besten über unseren Discord-Server im Kanal #bug-reports gemeldet, wo unser Team sie schneller bearbeiten kann."
+        },
+        {
+          "question": "Kann ich mich als Teammitglied bewerben?",
+          "answer": "Ja! Wir suchen immer nach engagierten Spielern für unser Team. Bitte fülle das Bewerbungsformular auf unserem Discord-Server aus."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "navigation": {
+    "home": "Home",
+    "news": "News",
+    "info": "Info",
+    "contact": "Contact",
+    "ranks": "Ranks"
+  },
+  "features": {
+    "survival": {
+      "title": "Vanilla Survival",
+      "description": "Experience Minecraft as it was meant to be, with minimal plugins that don't interfere with the core gameplay mechanics."
+    },
+    "economy": {
+      "title": "Player Economy",
+      "description": "Trade with other players using our balanced economy system with player shops and currency."
+    },
+    "towny": {
+      "title": "Town System",
+      "description": "Form towns with other players to protect your builds and collaborate on large projects."
+    },
+    "mcmmo": {
+      "title": "Skills & Leveling",
+      "description": "Level up various skills like mining, woodcutting, and combat to unlock special abilities and perks."
+    },
+    "customEnchants": {
+      "title": "Custom Enchantments",
+      "description": "Discover unique enchantments that go beyond vanilla, offering new ways to enhance your gear."
+    },
+    "customEvents": {
+      "title": "Community Events",
+      "description": "Participate in regular server events with unique challenges and prizes for the winners."
+    }
+  },
+  "server": {
+    "status": "Online",
+    "players": "players",
+    "joinServer": "JOIN OUR SERVER",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "uptime": "Uptime",
+    "serverInfo": "SERVER INFO"
+  },
+  "serverDescription": "Valeqs is a Minecraft survival server with minimal rules. Build, explore and survive in a challenging world. Our server features land claiming, teleports and quality-of-life improvements while maintaining the vanilla experience.",
+  "serverDetails": {
+    "worldBorder": "World Border",
+    "worldBorderValue": "30,000 x 30,000",
+    "mapReset": "Map Reset",
+    "mapResetValue": "Never (Since 2023)",
+    "difficulty": "Difficulty",
+    "difficultyValue": "Hard"
+  },
+  "discord": "Join our Discord",
+  "news": {
+    "latestNews": "LATEST NEWS",
+    "readMore": "Read more"
+  },
+  "footer": {
+    "copyright": "© 2025 VALEQS",
+    "disclaimer": "Not affiliated with Mojang",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "rules": "Rules"
+  },
+  "errors": {
+    "pageNotFound": "Page not found",
+    "goHome": "Return to home page"
+  },
+  "info": {
+    "title": "Server Information",
+    "subtitle": "Everything you need to know",
+    "welcome": "Welcome to Valeqs",
+    "welcomeText1": "Join our Minecraft community for an immersive survival experience. Valeqs offers a balanced gameplay with minimal rules, giving you freedom to build, explore, and connect with other players.",
+    "welcomeText2": "Our server has been running since 2023 with dedicated hardware and 99.9% uptime to ensure the best possible experience for all players.",
+    "serverAddress": "Server Address",
+    "howToJoin": "How to Join",
+    "onlinePlayers": "Online Players",
+    "registeredPlayers": "Registered Players",
+    "serverUptime": "Server Uptime",
+    "featuresTitle": "SERVER FEATURES",
+    "serverSpecifications": "SERVER SPECIFICATIONS",
+    "serverRules": "SERVER RULES",
+    "rulesNote": "These rules are enforced to ensure a fun and fair environment for everyone. Breaking these rules may result in warnings, temporary bans, or permanent bans depending on the severity and frequency of violations.",
+    "staffTeam": "STAFF TEAM",
+    "howToJoinSection": "HOW TO JOIN",
+    "joinDiscord": "Join our Discord Community",
+    "joinDiscordText": "Connect with other players, get server updates, and participate in community events by joining our Discord server. It's also the best place to get help if you're having issues connecting to the server."
+  },
+  "serverSpecs": {
+    "hardware": {
+      "label": "Hardware",
+      "value": "Dedicated Server, 32GB RAM, Ryzen 9 5900X"
+    },
+    "uptime": {
+      "label": "Uptime",
+      "value": "99.9%"
+    },
+    "location": {
+      "label": "Server Location",
+      "value": "Frankfurt, Germany"
+    },
+    "version": {
+      "label": "Minecraft Version",
+      "value": "Java 1.20.4"
+    },
+    "slots": {
+      "label": "Player Slots",
+      "value": "250"
+    },
+    "antiCheat": {
+      "label": "Anti-Cheat",
+      "value": "Custom Solution"
+    }
+  },
+  "rules": {
+    "respectful": {
+      "title": "Be Respectful",
+      "description": "Treat all players with respect. Harassment, hate speech, and excessive toxicity are not tolerated."
+    },
+    "noGriefing": {
+      "title": "No Griefing",
+      "description": "Destroying or altering other players' builds without permission is strictly forbidden."
+    },
+    "noCheating": {
+      "title": "No Cheating",
+      "description": "Hacks, exploits, or any unfair advantages that disrupt gameplay are prohibited."
+    },
+    "pvpGuidelines": {
+      "title": "PvP Guidelines",
+      "description": "PvP is allowed, but only in designated areas. No spawn killing or excessive targeting of new players."
+    },
+    "appropriateBuilds": {
+      "title": "Appropriate Builds",
+      "description": "Keep builds appropriate. No offensive structures or inappropriate pixel art."
+    },
+    "staffDecisions": {
+      "title": "Staff Decisions",
+      "description": "Respect staff decisions. If you have an issue, please use the appeal process on our Discord."
+    }
+  },
+  "staffRoles": {
+    "owner": "Owner",
+    "administrators": "Administrators",
+    "moderators": "Moderators",
+    "helpers": "Helpers"
+  },
+  "joinSteps": {
+    "step1": {
+      "title": "Get Minecraft Java Edition",
+      "description": "Ensure you have Minecraft Java Edition (version 1.20.4) installed on your computer."
+    },
+    "step2": {
+      "title": "Launch Minecraft",
+      "description": "Open Minecraft, click 'Multiplayer' from the main menu, then click 'Add Server'."
+    },
+    "step3": {
+      "title": "Enter Server Address",
+      "description": "Type 'valeqs.de' in the server address field, then click 'Done'."
+    },
+    "step4": {
+      "title": "Join and Have Fun",
+      "description": "Click on the server in your server list and enjoy your adventure on Valeqs!"
+    }
+  },
+  "contact": {
+    "title": "Contact Us - Valeqs Minecraft Server",
+    "heroTitle": "Get in <span class=\"highlight\">touch</span>",
+    "heroSubtitle": "We'd love to hear from you! Reach out with any questions, feedback or support requests.",
+    "form": {
+      "title": "Send us a message",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "subject": "Subject",
+      "subjectSelect": "Select a subject",
+      "subjects": {
+        "general": "General Question",
+        "support": "Player Support",
+        "feedback": "Feedback",
+        "report": "Report a Player",
+        "bug": "Report a Bug",
+        "business": "Business Inquiry"
+      },
+      "message": "Message",
+      "messagePlaceholder": "Your message here...",
+      "captcha": "I'm not a robot",
+      "send": "Send Message",
+      "sent": "Message Sent!"
+    },
+    "discord": {
+      "title": "Join our Discord",
+      "description": "Join our active community of players! Get instant support, find teammates, and stay updated on all server events.",
+      "members": "Members",
+      "online": "Online",
+      "joinButton": "Join Server"
+    },
+    "social": {
+      "discord": {
+        "name": "Discord",
+        "label": "Join our Discord server"
+      },
+      "email": {
+        "name": "Email",
+        "label": "Email us"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "label": "Follow us on Twitter"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "How long does it take to get a response?",
+          "answer": "We typically respond to all inquiries within 24-48 hours during weekdays. For faster response, we recommend joining our Discord server."
+        },
+        {
+          "question": "I found a bug on the server, where should I report it?",
+          "answer": "Bug reports are best submitted through our Discord server in the #bug-reports channel, where our staff can address them more quickly."
+        },
+        {
+          "question": "Can I apply to be a staff member?",
+          "answer": "Yes! We're always looking for dedicated players to join our staff team. Please fill out the application form on our Discord server."
+        }
+      ]
+    }
+  }
+}

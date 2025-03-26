@@ -1,0 +1,220 @@
+---
+// You can pass active page as a prop to highlight the current page in navigation
+const { activePage = "home" } = Astro.props;
+
+// Navigation items
+const navItems = [
+  { name: "Home", path: "/", id: "home" },
+  { name: "Info", path: "/info", id: "info" },
+  { name: "Contact", path: "/contact", id: "contact" },
+  { name: "Ranks", path: "/ranks", id: "ranks" }
+];
+---
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="logo">
+      <a href="/">VALEQS</a>
+    </div>
+    
+    <nav class="main-nav">
+      {navItems.map(item => (
+        <a 
+          href={item.path} 
+          class={activePage === item.id ? "active" : ""}
+        >
+          {item.name}
+        </a>
+      ))}
+    </nav>
+    
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+    
+    menuToggle?.addEventListener('click', () => {
+      mainNav?.classList.toggle('active');
+      menuToggle.classList.toggle('active');
+    });
+    
+    
+    document.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      const isNavOpen = mainNav?.classList.contains('active');
+      
+      if (isNavOpen && 
+          !target.closest('.main-nav') && 
+          !target.closest('.mobile-menu-toggle')) {
+        mainNav?.classList.remove('active');
+        menuToggle?.classList.remove('active');
+      }
+    });
+  });
+</script>
+
+<style>
+
+  :root {
+   
+    --bg-primary: #36393f;
+    --bg-secondary: #2f3136;
+    --bg-tertiary: #202225;
+    
+    --text-normal: #dcddde;
+    --text-muted: #8e9297;
+    --text-heading: #ffffff;
+    
+    --interactive: #b9bbbe;
+    --interactive-hover: #dcddde;
+    --interactive-active: #ffffff;
+    
+    --accent-blue: #5865f2;
+  }
+  
+ 
+  .site-header {
+    position: relative;
+    padding: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: rgba(32, 34, 37, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .logo a {
+    color: var(--text-heading);
+    text-decoration: none;
+  }
+  
+  .main-nav {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  .main-nav a {
+    color: var(--interactive);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .main-nav a:hover {
+    color: var(--interactive-hover);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .main-nav a.active {
+    color: var(--interactive-active);
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  
+  .mobile-menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    width: 30px;
+    height: 24px;
+    position: relative;
+    cursor: pointer;
+    z-index: 101;
+  }
+  
+  .mobile-menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-normal);
+    position: absolute;
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-menu-toggle span:nth-child(1) {
+    top: 0;
+  }
+  
+  .mobile-menu-toggle span:nth-child(2) {
+    top: 10px;
+  }
+  
+  .mobile-menu-toggle span:nth-child(3) {
+    top: 20px;
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-menu-toggle.active span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: block;
+    }
+    
+    .main-nav {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background-color: rgba(32, 34, 37, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 20px;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      display: none;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .main-nav.active {
+      display: flex;
+    }
+    
+    .main-nav a {
+      width: 100%;
+      text-align: center;
+      padding: 12px 16px;
+    }
+  }
+</style>
