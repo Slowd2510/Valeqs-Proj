@@ -67,23 +67,99 @@
   },
   "info": {
     "title": "Server Informationen",
-    "subtitle": "Alles was du wissen musst",
-    "welcome": "Willkommen bei Valeqs",
-    "welcomeText1": "Tritt unserer Minecraft-Community bei für ein immersives Survival-Erlebnis. Valeqs bietet ein ausgewogenes Spielerlebnis mit minimalen Regeln und gibt dir die Freiheit zu bauen, zu erkunden und dich mit anderen Spielern zu verbinden.",
-    "welcomeText2": "Unser Server läuft seit 2023 auf dedizierter Hardware mit 99,9% Betriebszeit, um das bestmögliche Erlebnis für alle Spieler zu gewährleisten.",
-    "serverAddress": "Server-Adresse",
-    "howToJoin": "Wie du beitrittst",
-    "onlinePlayers": "Online Spieler",
-    "registeredPlayers": "Registrierte Spieler",
-    "serverUptime": "Server-Betriebszeit",
-    "featuresTitle": "SERVER-FUNKTIONEN",
-    "serverSpecifications": "SERVER-SPEZIFIKATIONEN",
-    "serverRules": "SERVER-REGELN",
-    "rulesNote": "Diese Regeln werden durchgesetzt, um eine unterhaltsame und faire Umgebung für alle zu gewährleisten. Verstöße gegen diese Regeln können je nach Schwere und Häufigkeit zu Verwarnungen, temporären oder permanenten Sperren führen.",
-    "staffTeam": "TEAM",
-    "howToJoinSection": "WIE DU BEITRITTST",
-    "joinDiscord": "Tritt unserer Discord-Community bei",
-    "joinDiscordText": "Verbinde dich mit anderen Spielern, erhalte Server-Updates und nimm an Community-Events teil, indem du unserem Discord-Server beitrittst. Es ist auch der beste Ort, um Hilfe zu bekommen, wenn du Probleme beim Verbinden mit dem Server hast."
+    "subtitle": "Alles was du wissen musst"
+  },
+  "serverInfo": {
+    "title": "ÜBER UNSEREN SERVER",
+    "description": "Valeqs ist ein Minecraft-Survival-Server mit minimalen Regeln. Baue, erkunde und überlebe in einer herausfordernden Welt. Unser Server bietet Landansprüche, Teleports und Lebensqualitätsverbesserungen, während die Vanilla-Erfahrung erhalten bleibt.",
+    "items": [
+      {
+        "label": "Server-Adresse",
+        "value": "valeqs.de"
+      },
+      {
+        "label": "Minecraft-Version",
+        "value": "Java 1.20.4"
+      },
+      {
+        "label": "Weltgrenze",
+        "value": "30.000 x 30.000"
+      },
+      {
+        "label": "Kartenreset",
+        "value": "Nie (Seit 2023)"
+      },
+      {
+        "label": "Server-Hardware",
+        "value": "Dedizierter Server, 32GB RAM, Ryzen 9 5900X"
+      },
+      {
+        "label": "Betriebszeit",
+        "value": "99,9%"
+      },
+      {
+        "label": "Spieler-Slots",
+        "value": "250"
+      }
+    ]
+  },
+  "serverRules": {
+    "title": "SERVER-REGELN",
+    "description": "Diese Regeln werden durchgesetzt, um eine unterhaltsame und faire Umgebung für alle zu gewährleisten. Verstöße gegen diese Regeln können je nach Schwere und Häufigkeit zu Verwarnungen, temporären oder permanenten Sperren führen.",
+    "items": [
+      {
+        "title": "Sei Respektvoll",
+        "description": "Behandle alle Spieler mit Respekt. Belästigung, Hassrede und übermäßige Toxizität werden nicht toleriert."
+      },
+      {
+        "title": "Kein Griefing",
+        "description": "Das Zerstören oder Verändern der Bauwerke anderer Spieler ohne Erlaubnis ist streng verboten."
+      },
+      {
+        "title": "Kein Cheating",
+        "description": "Hacks, Exploits oder jegliche unfaire Vorteile, die das Spielerlebnis stören, sind verboten."
+      },
+      {
+        "title": "PvP-Richtlinien",
+        "description": "PvP ist erlaubt, aber nur in ausgewiesenen Bereichen. Kein Spawn-Killing oder übermäßiges Anvisieren neuer Spieler."
+      },
+      {
+        "title": "Angemessene Bauwerke",
+        "description": "Halte deine Bauwerke angemessen. Keine anstößigen Strukturen oder unangemessene Pixel-Art."
+      },
+      {
+        "title": "Team-Entscheidungen",
+        "description": "Respektiere die Entscheidungen des Teams. Bei Problemen nutze bitte den Einspruchsprozess in unserem Discord."
+      }
+    ]
+  },
+  "howToJoin": {
+    "title": "WIE DU BEITRITTST",
+    "description": "In nur wenigen einfachen Schritten kannst du unserem Server beitreten und dein Abenteuer auf Valeqs beginnen!",
+    "steps": [
+      {
+        "title": "Hole dir Minecraft Java Edition",
+        "description": "Stelle sicher, dass du Minecraft Java Edition (Version 1.20.4) auf deinem Computer installiert hast."
+      },
+      {
+        "title": "Starte Minecraft",
+        "description": "Öffne Minecraft, klicke im Hauptmenü auf 'Mehrspieler', dann auf 'Server hinzufügen'."
+      },
+      {
+        "title": "Gib die Server-Adresse ein",
+        "description": "Tippe 'valeqs.de' in das Feld für die Server-Adresse ein und klicke auf 'Fertig'."
+      },
+      {
+        "title": "Tritt bei und hab Spaß",
+        "description": "Klicke in deiner Serverliste auf den Server und genieße dein Abenteuer auf Valeqs!"
+      }
+    ]
+  },
+  "community": {
+    "title": "COMMUNITY",
+    "description": "Valeqs ist mehr als nur ein Server - es ist eine wachsende Gemeinschaft von Spielern, die sich gegenseitig unterstützen und zusammen Spaß haben.",
+    "discordTitle": "Tritt unserem Discord bei",
+    "discordText": "Verbinde dich mit anderen Spielern, erhalte Server-Updates und nimm an Community-Events teil. Es ist auch der beste Ort, um Hilfe zu bekommen, wenn du Probleme beim Verbinden mit dem Server hast."
   },
   "serverSpecs": {
     "hardware": {

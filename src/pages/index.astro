@@ -9,20 +9,13 @@ import type { Translations } from '../types/translations.js';
 const userLang = await getLanguage(Astro.request);
 const t = await loadTranslations(userLang) as Translations;
 
-
-
-
-
-// Server info
 const serverInfo = {
   ip: "valeqs.de",
-  version: "Java 1.21.4",
-  status: t.server.status, // Translated
-  players: "132/200",  // Could be dynamically fetched
-  uptime: "99.8%"
+  // Status removed as requested indirectly
+  uptime: ""
 };
 
-// Load blog posts from the blogs directory
+
 async function loadBlogPosts() {
   try {
     const blogsDir = path.join(process.cwd(), 'src', 'blogs');
@@ -34,13 +27,11 @@ async function loadBlogPosts() {
       const content = await readFile(filePath, 'utf8');
       const blogData = JSON.parse(content);
       
-      // Get blog content based on language
       const title = userLang === 'de' && blogData.title_de ? 
         blogData.title_de : blogData.title;
       const description = userLang === 'de' && blogData.description_de ? 
         blogData.description_de : blogData.description;
       
-      // Use locale-specific date formatting
       const dateFormat = userLang === 'de' ? 'de-DE' : 'en-US';
       const dateOptions: Intl.DateTimeFormatOptions = {
         year: 'numeric',
@@ -48,14 +39,11 @@ async function loadBlogPosts() {
         day: 'numeric'
       };
       
-      // Transform blog data to news post format
       let postDate;
       try {
-        // Try to create a date object first
         const dateObj = new Date(blogData.timestamp);
         postDate = dateObj.toLocaleDateString(dateFormat, dateOptions);
       } catch (e) {
-        // Fallback to current date if timestamp is invalid
         postDate = new Date().toLocaleDateString(dateFormat, dateOptions);
       }
       
@@ -63,86 +51,48 @@ async function loadBlogPosts() {
         id: parseInt(file.split('-')[1].split('.')[0]),
         title: title || 'Untitled Post',
         date: postDate,
-        content: description || '',
-        image: blogData.imageUrl || "/images/news/update.jpg"
+        dateIso: blogData.timestamp,
+        content: description ? 
+          description
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>') :
+          '',
+        image: blogData.imageUrl || null,
+        category: blogData.category || (userLang === 'de' ? 'Neuigkeit' : 'News'),
+        preview: description ? 
+          description.substring(0, 150) + (description.length > 150 ? '...' : '') : '',
+        author: blogData.author || { username: 'Admin' }
       };
     }));
-    
-    // Sort by date (newest first)
-    return posts.sort((a, b) => b.id - a.id);
+
+   
+    const filteredPosts = posts.map(post => {
+      if (!post.image) {
+        delete post.image;
+      }
+      return post; 
+    });
+
+   
+    return filteredPosts.sort((a, b) => b.id - a.id);
   } catch (error) {
     console.error('Error loading blog posts:', error);
-    // Fallback to default posts
-    return defaultNewsPosts;
+
+    return [];
   }
 }
 
-// Default news posts as fallback
-const defaultNewsPosts = [
-  {
-    id: 1,
-    title: userLang === 'de' ? "Server Update 1.20.4" : "Server Update 1.20.4",
-    date: userLang === 'de' ? "19. März 2025" : "March 19, 2025",
-    content: userLang === 'de' 
-      ? "Wir haben den Server auf Minecraft 1.20.4 aktualisiert. Alle wichtigen Plugins wurden aktualisiert und für bessere Leistung optimiert. Wenn du auf Fehler stößt, melde sie bitte in unserem Discord-Server."
-      : "We've updated the server to Minecraft 1.20.4. All major plugins have been updated and optimized for better performance. If you encounter any bugs, please report them in our Discord server.",
-    image: "/images/news/update.jpg"
-  },
-  {
-    id: 2,
-    title: userLang === 'de' ? "Kartenreset: Ressourcenwelt" : "Map Reset: Resource World",
-    date: userLang === 'de' ? "15. März 2025" : "March 15, 2025",
-    content: userLang === 'de'
-      ? "Die Ressourcenwelt wird am 25. März zurückgesetzt. Stelle sicher, dass du alle Ressourcen sammelst und deine Items vor diesem Datum in die Hauptwelt bringst. Die neue Welt wird verbesserte Generierungseinstellungen haben."
-      : "The resource world will be reset on March 25th. Make sure to gather all resources and move your items to the main world before this date. The new world will feature enhanced generation settings.",
-    image: "/images/news/reset.jpg"
-  },
-  {
-    id: 3,
-    title: userLang === 'de' ? "Wochenend-Event: Schatzsuche" : "Weekend Event: Treasure Hunt",
-    date: userLang === 'de' ? "10. März 2025" : "March 10, 2025",
-    content: userLang === 'de'
-      ? "Nimm an unserer Wochenend-Schatzsuche teil! In der gesamten Welt wurden versteckte Truhen mit wertvoller Beute platziert. Der erste Spieler, der alle 10 Truhen findet, gewinnt einen besonderen Preis."
-      : "Join our weekend treasure hunt! Hidden chests have been placed throughout the world with valuable loot. First player to find all 10 chests wins a special prize.",
-    image: "/images/news/event.jpg"
-  }
-];
-
-// Load posts from filesystem or use defaults if folder doesn't exist yet
 const newsPosts = await loadBlogPosts();
 ---
 
-<Layout title="Valeqs - Minecraft Server">
-
-
-
+<Layout title="Valeqs Minecraft Server" activePage="home">
   <div class="page-container">
-    <!-- Navigation -->
-    <header class="site-header">
-      <div class="logo">VALEQS</div>
-      <nav class="main-nav">
-        <a href="/" class="active">{t.navigation.home}</a>
-        <a href="/news">{t.navigation.news}</a>
-        <a href="/info">{t.navigation.info}</a>
-        <a href="/contact">{t.navigation.contact}</a>
-        <a href="/ranks">{t.navigation.ranks}</a>
-      </nav>
-      <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </header>
-
     <main>
       <!-- Server Connect Section -->
       <section class="server-connect">
-        <div class="server-status-indicator">
-          <span class={`status-dot ${serverInfo.status.toLowerCase()}`}></span>
-          <span class="status-text">{serverInfo.status}</span>
-          <span class="players-count">{serverInfo.players} {t.server.players}</span>
-        </div>
-        
+        <!-- Entferne den grünen Punkt vollständig -->
         <h1>{t.server.joinServer}</h1>
         
         <div class="server-ip-container">
@@ -150,69 +100,53 @@ const newsPosts = await loadBlogPosts();
             <span class="ip-text">{serverInfo.ip}</span>
             <button id="copy-ip" class="copy-button">{t.server.copy}</button>
           </div>
-          <div class="server-version">{serverInfo.version}</div>
         </div>
         
         <div class="server-stats">
           <div class="stat">
-            <div class="stat-value">{serverInfo.uptime}</div>
-            <div class="stat-label">{t.server.uptime}</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Server Info Section -->
-      <section class="server-info">
-        <div class="info-card">
-          <h2>{t.server.serverInfo}</h2>
-          <p>{t.serverDescription}</p>
-          
-          <div class="info-details">
-            <div class="info-item">
-              <span class="info-label">{t.serverDetails.worldBorder}:</span>
-              <span class="info-value">{t.serverDetails.worldBorderValue}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">{t.serverDetails.mapReset}:</span>
-              <span class="info-value">{t.serverDetails.mapResetValue}</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">{t.serverDetails.difficulty}:</span>
-              <span class="info-value">{t.serverDetails.difficultyValue}</span>
-            </div>
-          </div>
-          
-          <div class="discord-invite">
-            <a href="https://discord.gg/valeqs" class="discord-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="discord-icon">
-                <path fill="currentColor" d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.86,1.86,0,0,0-1.019-2.588,321.173,321.173,0,0,1-45.868-21.853,1.885,1.885,0,0,1-.185-3.126c3.082-2.309,6.166-4.711,9.109-7.137a1.819,1.819,0,0,1,1.9-.256c96.229,43.917,200.41,43.917,295.5,0a1.812,1.812,0,0,1,1.924.233c2.944,2.426,6.027,4.851,9.132,7.16a1.884,1.884,0,0,1-.162,3.126,301.407,301.407,0,0,1-45.89,21.83,1.875,1.875,0,0,0-1,2.611,391.055,391.055,0,0,0,30.014,48.815,1.864,1.864,0,0,0,2.063.7A486.048,486.048,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/>
-              </svg>
-              {t.discord}
-            </a>
           </div>
         </div>
       </section>
 
       <!-- News Section -->
       <section class="news-section">
-        <h2 class="section-title">{t.news.latestNews}</h2>
+        <h2 class="section-title" style="text-align: center;">{t.news.latestNews}</h2>
         
         <div class="news-container">
           {newsPosts.map(post => (
-            <article class="news-post">
-              {post.image && (
-                <div class="post-image">
-                  <img src={post.image} alt={post.title} loading="lazy" />
-                </div>
-              )}
-              
-              <div class="post-content">
-                <div class="post-header">
-                  <h3 class="post-title">{post.title}</h3>
-                  <time class="post-date">{post.date}</time>
+            <article class="news-post discord-embed">
+              <div class="embed-accent"></div>
+              <div class="embed-content">
+                <div class="embed-header">
+                  <time class="embed-timestamp" datetime={post.dateIso ?? new Date(post.date).toISOString()}>
+                    {post.date}
+                  </time>
+                  <h3 class="embed-title">{post.title}</h3>
                 </div>
                 
-                <p class="post-text">{post.content}</p>
+                <div class="embed-description">
+                  <p set:html={post.content} />
+                </div>
+                
+                {post.image && (
+                  <div class="embed-image">
+                    <img src={post.image} alt={post.title} loading="lazy" />
+                  </div>
+                )}
+                
+                <div class="embed-footer">
+                  <div class="embed-author">
+                    <div class="author-avatar">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <span>{post.author?.username ?? 'Admin'}</span>
+                  </div>
+                  
+                  <button class="embed-button read-more" aria-expanded="false" data-post-id={post.id}>
+                    {t.news.readMore}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                </div>
               </div>
             </article>
           ))}
@@ -239,20 +173,16 @@ const newsPosts = await loadBlogPosts();
 </Layout>
 
 <script is:inline>
-  // Background Slideshow Functionality
   document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.slide');
     let currentSlide = 0;
     
-    // Get language from window object
     const userLanguage = window.userLanguage || 'en';
     
-    // TypeScript won't check this at runtime
     if (!window.userLanguage) {
       window.userLanguage = userLanguage;
     }
     
-    // Load translations for client-side content
     async function loadClientTranslations() {
       try {
         const response = await fetch(`/api/translations?lang=${userLanguage}`);
@@ -266,7 +196,6 @@ const newsPosts = await loadBlogPosts();
       }
     }
     
-    // Initialize: hide all slides except the first one
     slides.forEach((slide, index) => {
       if (index !== 0) {
         slide.classList.add('inactive');
@@ -274,18 +203,14 @@ const newsPosts = await loadBlogPosts();
     });
     
     function rotateSlides() {
-      // Fade out current slide
       slides[currentSlide].classList.add('fade-out');
       
       setTimeout(() => {
-        // Hide current slide
         slides[currentSlide].classList.add('inactive');
         slides[currentSlide].classList.remove('fade-out');
         
-        // Move to next slide
         currentSlide = (currentSlide + 1) % slides.length;
         
-        // Show and fade in next slide
         slides[currentSlide].classList.remove('inactive');
         slides[currentSlide].classList.add('fade-in');
         
@@ -295,12 +220,9 @@ const newsPosts = await loadBlogPosts();
       }, 1000);
     }
     
-    // Rotate slides every 8 seconds
     setInterval(rotateSlides, 8000);
     
-    // Load translations for client-side uses
     loadClientTranslations().then(translations => {
-      // Copy IP functionality
       document.getElementById('copy-ip')?.addEventListener('click', () => {
         const ipElement = document.querySelector('.ip-text');
         const serverIp = ipElement?.textContent || '';
@@ -308,7 +230,6 @@ const newsPosts = await loadBlogPosts();
           .then(() => {
             const button = document.getElementById('copy-ip');
             if (button) {
-              // Use translated text if available
               const copiedText = translations?.server?.copied || 'Copied!';
               const copyText = translations?.server?.copy || 'Copy';
               
@@ -322,15 +243,38 @@ const newsPosts = await loadBlogPosts();
             console.error('Could not copy text: ', err);
           });
       });
+
+      const readMoreButtons = document.querySelectorAll('.read-more');
+      readMoreButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const postElement = button.closest('.news-post');
+          const descriptionElement = postElement?.querySelector('.embed-description');
+          const isExpanded = button.getAttribute('aria-expanded') === 'true';
+          const readMoreText = translations?.news?.readMore || 'Read More';
+          const readLessText = translations?.news?.readLess || 'Read Less';
+          const arrowDownSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+          const arrowUpSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>';
+
+          if (descriptionElement) {
+            if (isExpanded) {
+              descriptionElement.classList.remove('expanded');
+              button.setAttribute('aria-expanded', 'false');
+              button.innerHTML = `${readMoreText} ${arrowDownSVG}`;
+            } else {
+              descriptionElement.classList.add('expanded');
+              button.setAttribute('aria-expanded', 'true');
+              button.innerHTML = `${readLessText} ${arrowUpSVG}`;
+            }
+          }
+        });
+      });
     });
     
-    // Mobile menu toggle
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
-    
-    menuToggle?.addEventListener('click', () => {
-      mainNav?.classList.toggle('active');
-    });
+    const newsPosts = document.querySelectorAll('.news-post');
+    if (newsPosts.length > 0) {
+      const newestPost = newsPosts[0];
+      newestPost.classList.add('new-post');
+    }
   });
 </script>
 
@@ -439,118 +383,10 @@ const newsPosts = await loadBlogPosts();
     flex-direction: column;
   }
   
-  /* Header & Navigation */
-  .site-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 0;
-    margin-bottom: 2rem;
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-heading);
-    letter-spacing: 1px;
-  }
-  
-  .main-nav {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .main-nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-md);
-    transition: all var(--transition-fast);
-    font-weight: 500;
-  }
-  
-  .main-nav a:hover {
-    color: var(--text-heading);
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-  
-  .main-nav a.active {
-    color: var(--text-heading);
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-  
-  .mobile-menu-toggle {
-    display: none;
-    background: transparent;
-    border: none;
-    width: 30px;
-    height: 24px;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .mobile-menu-toggle span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: var(--text-normal);
-    position: absolute;
-    transition: all 0.3s ease;
-  }
-  
-  .mobile-menu-toggle span:nth-child(1) {
-    top: 0;
-  }
-  
-  .mobile-menu-toggle span:nth-child(2) {
-    top: 10px;
-  }
-  
-  .mobile-menu-toggle span:nth-child(3) {
-    top: 20px;
-  }
-  
   /* Server Connect Section */
   .server-connect {
     text-align: center;
     padding: 2.5rem 0;
-  }
-  
-  .server-status-indicator {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem 1rem;
-    background-color: var(--bg-secondary);
-    border-radius: 2rem;
-  }
-  
-  .status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-  
-  .status-dot.online {
-    background-color: var(--status-online);
-    box-shadow: 0 0 10px var(--status-online);
-  }
-  
-  .status-dot.offline {
-    background-color: var(--status-offline);
-  }
-  
-  .status-text {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-heading);
-  }
-  
-  .players-count {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-left: 0.5rem;
   }
   
   .server-connect h1 {
@@ -576,7 +412,7 @@ const newsPosts = await loadBlogPosts();
   
   .ip-text {
     font-family: monospace;
-    font-size: 1.25rem;
+    font-size: 1.6rem; /* Increased font size */
     letter-spacing: 1px;
     margin-right: 1rem;
     color: var(--text-heading);
@@ -709,87 +545,183 @@ const newsPosts = await loadBlogPosts();
     height: 1.25rem;
   }
   
-  /* News Section */
+  /* News Section - Discord-Embed Style */
   .news-section {
     margin-bottom: 4rem;
   }
-  
+
   .section-title {
     font-size: 1.75rem;
-    color: var(--text-heading);
     margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-heading);
     font-weight: 700;
   }
-  
+
   .news-container {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
   }
-  
-  .news-post {
-    background-color: var(--bg-secondary);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  }
-  
-  .news-post:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  }
-  
-  .post-image {
-    height: 200px;
-    width: 100%;
-    overflow: hidden;
-  }
-  
-  .post-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  .news-post:hover .post-image img {
-    transform: scale(1.05);
-  }
-  
-  .post-content {
-    padding: 1.5rem;
-  }
-  
-  .post-header {
+
+  /* Discord Embed Style */
+  .discord-embed {
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    background-color: var(--bg-light);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    transition: transform 0.15s ease;
   }
-  
-  .post-title {
-    font-size: 1.4rem;
-    color: var(--text-heading);
-    margin: 0;
-    font-weight: 700;
+
+  .discord-embed:hover {
+    transform: translateY(-2px);
   }
-  
-  .post-date {
-    font-size: 0.9rem;
+
+  .embed-accent {
+    flex: 0 0 4px;
+    background-color: var(--button-primary);
+  }
+
+  .embed-content {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .embed-header {
+    margin-bottom: 0.25rem;
+  }
+
+  .embed-timestamp {
+    display: inline-block;
+    font-size: 0.7rem;
     color: var(--text-muted);
     font-weight: 500;
+    margin-bottom: 0.25rem;
   }
-  
-  .post-text {
-    color: var(--text-normal);
-    line-height: 1.6;
-    margin: 0;
+
+  .embed-title {
     font-size: 1rem;
+    color: var(--text-heading);
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .embed-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-normal);
+    overflow: hidden;
+    max-height: 3.5em; /* ~2.5 lines */
+  }
+
+  .embed-description.expanded {
+    max-height: none;
+  }
+
+  .embed-description a {
+    color: var(--button-primary);
+    text-decoration: none;
+  }
+
+  .embed-description a:hover {
+    text-decoration: underline;
+  }
+
+  .embed-image {
+    margin-top: 0.5rem;
+    border-radius: 3px;
+    overflow: hidden;
+    max-height: 300px;
+  }
+
+  .embed-image img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  .embed-footer {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+
+  .embed-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+  }
+
+  .author-avatar {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--button-secondary);
+    color: var(--text-normal);
+    overflow: hidden;
+  }
+
+  .author-avatar svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .embed-button {
+    background: none;
+    border: none;
+    color: var(--button-primary);
+    font-weight: 500;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .embed-button:hover {
+    text-decoration: underline;
+    color: var(--button-primary-hover);
+  }
+
+  .embed-button svg {
+    transition: transform 0.2s ease;
+  }
+
+  .embed-button[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+
+  /* Ändere die Akzentfarbe des neuesten Posts von Orange zu Blau
+     (verwende die gleiche Farbe wie für die anderen Posts) */
+  .discord-embed:first-child .embed-accent {
+    background-color: var(--button-primary); /* Blau statt Orange */
+  }
+
+  /* Mobile Anpassungen */
+  @media (max-width: 480px) {
+    .embed-content {
+      padding: 0.5rem 0.75rem;
+    }
+    
+    .embed-image {
+      max-height: 200px;
+    }
+    
+    .embed-image img {
+      max-height: 200px;
+    }
   }
   
   /* Footer */
@@ -849,41 +781,7 @@ const newsPosts = await loadBlogPosts();
       margin-bottom: 1.5rem;
     }
     
-    .main-nav {
-      display: none;
-      position: absolute;
-      top: 4rem;
-      left: 0;
-      right: 0;
-      background-color: var(--bg-tertiary);
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem;
-      border-radius: 0 0 var(--radius-md) var(--radius-md);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .main-nav.active {
-      display: flex;
-    }
-    
-    .mobile-menu-toggle {
-      display: block;
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(1) {
-      transform: translateY(10px) rotate(45deg);
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(3) {
-      transform: translateY(-10px) rotate(-45deg);
-    }
+
     
     .server-connect h1 {
       font-size: 2rem;
@@ -905,7 +803,7 @@ const newsPosts = await loadBlogPosts();
     .ip-text {
       margin-right: 0;
       margin-bottom: 0;
-      font-size: 1.1rem;
+      font-size: 1.3rem; /* Adjusted size for smaller screens */
     }
     
     .copy-button {

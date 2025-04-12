@@ -1,11 +1,14 @@
 ---
 import { getLanguage, loadTranslations } from '../utils/language.js';
+import Navbar from '../components/Navbar.astro';
+import { trackPageView } from '../lib/analytics';
 
 export interface Props {
   title: string;
+  activePage?: string;
 }
 
-const { title } = Astro.props;
+const { title, activePage = "home" } = Astro.props;
 
 // Detect user language for every page
 const userLang = await getLanguage(Astro.request);
@@ -24,6 +27,13 @@ const screenshots = [
 });
 
 // Pass language to client-side JavaScript
+
+if (import.meta.env.PROD) {
+  trackPageView({
+    path: new URL(Astro.request.url).pathname,
+    referrer: Astro.request.headers.get('referer') || undefined
+  });
+}
 ---
 
 <!DOCTYPE html>
@@ -51,55 +61,55 @@ const screenshots = [
         <div 
           class="slide" 
           data-index={index} 
-          data-image={img.path.includes('world1') ? 'world1' : ''} 
-          style={`background-image: url(${img.path}), url(${img.fallback})`}
+          style={`background-image: url(${img.path})`}
         ></div>
       ))}
       <div class="overlay"></div>
     </div>
     
-    <slot />
+    <div class="site-container">
+      <Navbar activePage={activePage} />
+      
+      <slot />
+    </div>
     
     <script>
-      // Background Slideshow Functionality
+      // Simplified Background Slideshow
       document.addEventListener('DOMContentLoaded', () => {
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
         
-        // Initialize: hide all slides except the first one
+        // Initialize: show only first slide
         slides.forEach((slide, index) => {
           if (index !== 0) {
-            slide.classList.add('inactive');
+            (slide as HTMLElement).style.opacity = '0';
+          } else {
+            (slide as HTMLElement).style.opacity = '1';
           }
         });
         
+        // Simple slide rotation with minimal animation
         function rotateSlides() {
-          // Fade out current slide
-          slides[currentSlide].classList.add('fade-out');
+          // Start fading out current slide
+          const currentElement = slides[currentSlide] as HTMLElement;
+          currentElement.style.transition = 'opacity 3s ease';
+          currentElement.style.opacity = '0';
           
-          setTimeout(() => {
-            // Hide current slide
-            slides[currentSlide].classList.add('inactive');
-            slides[currentSlide].classList.remove('fade-out');
-            
-            // Move to next slide
-            currentSlide = (currentSlide + 1) % slides.length;
-            
-            // Show and fade in next slide
-            slides[currentSlide].classList.remove('inactive');
-            slides[currentSlide].classList.add('fade-in');
-            
-            setTimeout(() => {
-              slides[currentSlide].classList.remove('fade-in');
-            }, 1500);
-          }, 1500);
+          // Move to next slide
+          currentSlide = (currentSlide + 1) % slides.length;
+          
+          // Start fading in next slide
+          const nextElement = slides[currentSlide] as HTMLElement;
+          nextElement.style.transition = 'opacity 3s ease';
+          nextElement.style.opacity = '1';
         }
         
-        // Rotate slides every 15 seconds (extended from 8 seconds)
-        setInterval(rotateSlides, 15000);
+        // Very slow rotation - 40 seconds per slide
+        setInterval(rotateSlides, 40000);
       });
     </script>
   </body>
+ <script src="/scripts/analytics.js" defer></script>
 </html>
 
 <style is:global>
@@ -442,6 +452,7 @@ const screenshots = [
     width: 100%;
     height: 100%;
     z-index: -2;
+    overflow: hidden;
   }
   
   .slide {
@@ -452,85 +463,16 @@ const screenshots = [
     height: 100%;
     background-size: cover;
     background-position: center;
-    transition: opacity 1.5s ease;
+    z-index: -2;
   }
   
-  .slide.inactive {
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .slide.fade-in {
-    animation: fadeIn 1.5s forwards;
-  }
-  
-  .slide.fade-out {
-    animation: fadeOut 1.5s forwards;
-  }
-
   .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(7, 10, 15, 0.78);
-  z-index: -1;
-}
-  
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-
-  
-  .slide[data-image="world1"]::after {
-    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); 
-    z-index: 1;
-  }
-  
-  
-  @media (max-width: 1024px) {
-    .section-container {
-      padding: 0 1.5rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2.8rem;
-    }
-    
-    h2 {
-      font-size: 2rem;
-    }
-    
-    .section-container {
-      padding: 0 1rem;
-    }
-    
-    .section-title {
-      font-size: 2rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 2.2rem;
-    }
-    
-    h2 {
-      font-size: 1.8rem;
-    }
-    
-    .section-title {
-      font-size: 1.8rem;
-    }
+    background: rgba(7, 10, 15, 0.82); /* Consistent darkness */
+    z-index: -1;
   }
 </style>

@@ -1,0 +1,9 @@
+---
+import { isAdmin } from '../../middleware/auth';
+
+// Check if user is admin
+const userIsAdmin = await isAdmin(Astro.request);
+
+// Redirect to login if not admin, otherwise redirect to dashboard
+return Astro.redirect(userIsAdmin ? '/admin/dashboard' : '/admin/login');
+---

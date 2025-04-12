@@ -1,0 +1,648 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { isAdmin } from '../../middleware/auth';
+import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
+import path from 'path';
+// Da VisitorStats nicht exportiert wird, definieren wir es hier lokal
+import { getVisitorStats, getPageViews, getBrowserStats } from '../../lib/analytics';
+import type { PathLike } from 'fs';
+
+// Lokale Definition des VisitorStats Typs
+type VisitorStats = {
+  totalPageViews?: number;
+  uniqueVisitors?: number;
+  averageSessionDuration?: number;
+  bounceRate?: number;
+  dailyVisitors?: Array<{ date: string; count: number; uniqueCount: number }>;
+};
+
+const userIsAdmin = await isAdmin(Astro.request);
+if (!userIsAdmin) {
+  return Astro.redirect('/admin/login');
+}
+
+// Hole die Stats serverseitig
+const visitorStats: VisitorStats = await getVisitorStats(); // Typisierung hinzufügen
+const pageViews = await getPageViews();
+const browserStats = await getBrowserStats();
+const adminLogs = await getAdminLogs();
+
+// KORRIGIERT - Verwende die neuen Namen aus der VisitorStats-Schnittstelle
+const initialTotalPageViews = visitorStats.totalPageViews ?? 0;
+const initialUniqueVisitors = visitorStats.uniqueVisitors ?? 0;
+const initialAverageSessionDuration = visitorStats.averageSessionDuration ?? 0;
+const initialBounceRate = visitorStats.bounceRate ?? 0;
+
+// Typ für VisitorData bleibt gleich
+type VisitorData = { date: string; count: number; uniqueCount: number }; // uniqueCount hinzugefügt für Klarheit
+const recentVisitors = (visitorStats.dailyVisitors || []).slice(-30) as VisitorData[];
+
+
+function formatTime(seconds: number) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}m ${secs}s`;
+}
+
+async function getAdminLogs() {
+  try {
+    const logsDir = path.join(process.cwd(), 'data', 'logs');
+    await ensureDirectory(logsDir);
+    
+    const logFilePath = path.join(logsDir, 'admin_activity.json');
+    
+    try {
+      const data = await readFile(logFilePath, 'utf8');
+      return JSON.parse(data);
+    } catch (e) {
+      return [];
+    }
+  } catch (error) {
+    return [];
+  }
+}
+
+async function ensureDirectory(dir: PathLike) {
+  try {
+    await readdir(dir);
+  } catch (error) {
+    await mkdir(dir, { recursive: true });
+  }
+}
+
+const topPages = Object.entries(pageViews.pages || {})
+  .map(([path, count]) => ({ path, count: count as number }))
+  .sort((a, b) => b.count - a.count)
+  .slice(0, 5);
+
+
+const chartData = {
+  labels: recentVisitors.map(d => new Date(d.date).toLocaleDateString('de-DE', {day: '2-digit', month: '2-digit'})),
+  pageViews: recentVisitors.map(d => d.count), 
+  uniqueVisitors: recentVisitors.map(d => d.uniqueCount) 
+};
+---
+
+<AdminLayout title="Analytics Dashboard" section="analytics">
+  <div class="analytics-dashboard">
+    <div class="dashboard-header">
+      <h1>Analytics Dashboard</h1>
+      <div class="time-range">
+        <span>Letzte 30 Tage</span>
+      </div>
+    </div>
+
+    <div class="stats-overview">
+      {/* Stat Card für Gesamt-Seitenaufrufe */}
+      <div class="stat-card total-visitors">
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Seitenaufrufe</h3> {/* Titel angepasst */}
+        <p class="stat-value" id="total-visitors">{initialTotalPageViews.toLocaleString()}</p> {}
+        <p class="stat-desc">Gesamt</p>
+      </div>
+      </div>
+
+      {/* Stat Card für Eindeutige Besucher */}
+      <div class="stat-card unique-visitors">
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Unique Visitors</h3>
+        <p class="stat-value" id="unique-visitors">{initialUniqueVisitors.toLocaleString()}</p> {}
+        <p class="stat-desc">Unique Besucher</p>
+      </div>
+      </div>
+
+      {/* Stat Card für Durchschnittliche Sitzungsdauer */}
+      <div class="stat-card avg-time">
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Sitzungsdauer</h3> {/* Titel angepasst */}
+        <p class="stat-value" id="avg-time">{formatTime(initialAverageSessionDuration)}</p> {}
+        <p class="stat-desc">Durchschnittlich</p>
+      </div>
+      </div>
+
+      {/* Stat Card für Absprungrate */}
+      <div class="stat-card bounce-rate">
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"></polyline>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <h3 class="stat-title">Absprungrate</h3>
+        <p class="stat-value" id="bounce-rate">{initialBounceRate}%</p> {}
+        <p class="stat-desc">Sofort verlassen</p>
+      </div>
+      <div class="disabled-notice">
+        <span class="status-badge">Deaktiviert</span>
+      </div>
+      </div>
+      <div class="performance-notice">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Temporär deaktiviert aufgrund von Performanceauslastung
+      </p>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card visitors-chart">
+        <div class="card-header">
+          <h2 class="card-title">Besucher über Zeit</h2>
+        </div>
+        <div class="card-body">
+          <canvas id="visitorsChart" height="250"></canvas>
+        </div>
+      </div>
+      
+      <div class="card top-pages">
+        <div class="card-header">
+          <h2 class="card-title">Top-Seiten</h2>
+        </div>
+        <div class="card-body">
+          {topPages.length > 0 ? (
+            <div class="top-pages-list">
+              {topPages.map((page, index) => (
+                <div class="top-page-item">
+                  <span class="page-rank">{index + 1}</span>
+                  <span class="page-path">{page.path}</span>
+                  <span class="page-views">{page.count} Ansichten</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div class="empty-state">
+              <p>Keine Daten verfügbar</p>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <div class="card browser-stats">
+        <div class="card-header">
+          <h2 class="card-title">Browser</h2>
+        </div>
+        <div class="card-body">
+          <canvas id="browserChart" height="250"></canvas>
+        </div>
+      </div>
+      
+      <div class="card admin-logs">
+        <div class="card-header">
+          <h2 class="card-title">Admin Aktivitäten</h2>
+        </div>
+        <div class="card-body">
+          {adminLogs.length > 0 ? (
+            <table class="logs-table">
+              <thead>
+                <tr>
+                  <th>Zeitpunkt</th>
+                  <th>Benutzer</th>
+                  <th>Aktion</th>
+                  <th>IP-Adresse</th>
+                </tr>
+              </thead>
+              <tbody>
+                {adminLogs.slice(0, 10).map((log: { timestamp: string | number | Date; user: unknown; action: unknown; ip: unknown; }) => (
+                  <tr>
+                    <td>{new Date(log.timestamp).toLocaleString('de-DE')}</td>
+                    <td>{log.user}</td>
+                    <td>{log.action}</td>
+                    <td>{log.ip}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div class="empty-state">
+              <p>Keine Aktivitäten protokolliert</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{/* Passe define:vars an, um die neuen Chart-Daten zu übergeben */}
+<script define:vars={{ chartData, browserStats, topPages }}>
+  let dailyVisitorsChart; // Variable für das Chart-Objekt
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const visitorsCtx = document.getElementById('visitorsChart')?.getContext('2d');
+    const browserCtx = document.getElementById('browserChart')?.getContext('2d');
+
+    if (visitorsCtx) {
+      dailyVisitorsChart = new Chart(visitorsCtx, { // Chart-Objekt speichern
+        type: 'line',
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: 'Seitenaufrufe', // Angepasst
+              data: chartData.pageViews, // Korrigiert
+              fill: true,
+              backgroundColor: 'rgba(79, 70, 229, 0.1)',
+              borderColor: 'rgba(79, 70, 229, 1)',
+              tension: 0.3,
+              yAxisID: 'y', // Achse zuweisen
+            },
+            {
+              label: 'Unique Visitors', // Zweites Dataset
+              data: chartData.uniqueVisitors, // Korrigiert
+              fill: false, // Keine Füllung für die zweite Linie
+              borderColor: 'rgba(16, 185, 129, 1)', // Andere Farbe
+              tension: 0.3,
+              yAxisID: 'y', // Gleiche Achse
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true // Legende anzeigen, da jetzt 2 Datasets
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false,
+            }
+          },
+          scales: {
+            y: { // Nur eine Y-Achse definieren
+              beginAtZero: true,
+              ticks: {
+                precision: 0
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // ... (Browser Chart bleibt gleich) ...
+    if (browserCtx) {
+        const browserLabels = Object.keys(browserStats);
+        const browserData = Object.values(browserStats);
+
+        new Chart(browserCtx, {
+          type: 'doughnut',
+          data: {
+            labels: browserLabels,
+            datasets: [{
+              data: browserData,
+              backgroundColor: [
+                'rgba(79, 70, 229, 0.8)',
+                'rgba(16, 185, 129, 0.8)',
+                'rgba(245, 158, 11, 0.8)',
+                'rgba(239, 68, 68, 0.8)',
+                'rgba(107, 114, 128, 0.8)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right'
+              }
+            }
+          }
+        });
+    }
+
+    // Lade Daten clientseitig nach, um die initialen Werte zu überschreiben/aktualisieren
+    loadAnalyticsData();
+  });
+
+  async function loadAnalyticsData() {
+    try {
+      const response = await fetch('/api/analytics/data');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+
+      if (data.visitors) {
+        document.getElementById('total-visitors').textContent = data.visitors.totalPageViews ?? 0;
+        document.getElementById('unique-visitors').textContent = data.visitors.uniqueVisitors ?? 0;
+
+        const avgDuration = data.visitors.averageSessionDuration ?? 0;
+        const minutes = Math.floor(avgDuration / 60);
+        const seconds = avgDuration % 60;
+        document.getElementById('avg-time').textContent = `${minutes}m ${seconds}s`;
+        document.getElementById('bounce-rate').textContent = `${data.visitors.bounceRate ?? 0}%`;
+
+        // Update daily visitors chart (client-side)
+        if (data.visitors.dailyVisitors && dailyVisitorsChart) {
+          const labels = data.visitors.dailyVisitors.map(d => d.date);
+          const counts = data.visitors.dailyVisitors.map(d => d.count);
+          const uniqueCounts = data.visitors.dailyVisitors.map(d => d.uniqueCount);
+
+          dailyVisitorsChart.data.labels = labels;
+          dailyVisitorsChart.data.datasets[0].data = counts; // Update Page Views
+          dailyVisitorsChart.data.datasets[1].data = uniqueCounts; // Update Unique Visitors
+          dailyVisitorsChart.update();
+        }
+      }
+
+      // Update Top Pages (client-side, falls nötig)
+      if (data.pages) {
+          const topPagesData = Object.entries(data.pages.pages || {})
+              .map(([path, count]) => ({ path, count: Number(count) }))
+              .sort((a, b) => b.count - a.count)
+              .slice(0, 5);
+
+          const listElement = document.querySelector('.top-pages-list');
+          if (listElement) {
+              listElement.innerHTML = ''; // Clear existing list
+              if (topPagesData.length > 0) {
+                  topPagesData.forEach((page, index) => {
+                      const item = document.createElement('div');
+                      item.className = 'top-page-item';
+                      item.innerHTML = `
+                          <span class="page-rank">${index + 1}</span>
+                          <span class="page-path">${page.path}</span>
+                          <span class="page-views">${page.count} Ansichten</span>
+                      `;
+                      listElement.appendChild(item);
+                  });
+              } else {
+                  listElement.innerHTML = '<div class="empty-state"><p>Keine Daten verfügbar</p></div>';
+              }
+          }
+      }
+
+      
+
+    } catch (error) {
+      console.error("Failed to load analytics data:", error);
+    }
+  }
+</script>
+
+<style>
+  .analytics-dashboard {
+    max-width: 100%;
+    padding-bottom: 2rem;
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .time-range {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 0.875rem;
+  }
+  
+  .stats-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  
+  .stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .stat-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .total-visitors .stat-icon {
+    background: rgba(79, 70, 229, 0.1);
+    color: rgba(79, 70, 229, 1);
+  }
+  
+  .unique-visitors .stat-icon {
+    background: rgba(16, 185, 129, 0.1);
+    color: rgba(16, 185, 129, 1);
+  }
+  
+  .avg-time .stat-icon {
+    background: rgba(245, 158, 11, 0.1);
+    color: rgba(245, 158, 11, 1);
+  }
+  
+  .bounce-rate .stat-icon {
+    background: rgba(239, 68, 68, 0.1);
+    color: rgba(239, 68, 68, 1);
+  }
+  
+  .stat-content {
+    flex-grow: 1;
+  }
+  
+  .stat-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 0.25rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 0 0.25rem;
+  }
+  
+  .stat-desc {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .visitors-chart {
+    grid-column: span 2;
+  }
+  
+  .card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .top-pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .top-page-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .top-page-item:last-child {
+    border-bottom: none;
+  }
+  
+  .page-rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-right: 0.75rem;
+  }
+  
+  .page-path {
+    flex-grow: 1;
+    font-size: 0.875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 70%;
+  }
+  
+  .page-views {
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .logs-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .logs-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    padding: 0.5rem;
+  }
+  
+  .logs-table td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.875rem;
+  }
+  
+  .logs-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+  }
+  
+  @media (max-width: 1200px) {
+    .stats-overview,
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .visitors-chart {
+      grid-column: span 1;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }
+</style>

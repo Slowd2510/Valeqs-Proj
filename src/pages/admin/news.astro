@@ -1,0 +1,1144 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { isAdmin } from '../../middleware/auth';
+import { readdir, readFile, unlink } from 'fs/promises';
+import path from 'path';
+
+// Check admin authentication
+const userIsAdmin = await isAdmin(Astro.request);
+if (!userIsAdmin) {
+  return Astro.redirect('/admin/login');
+}
+
+interface BlogPost {
+  id: string;
+  filename: string;
+  title: string;
+  timestamp: string;
+  description: string;
+  imageUrl: string;
+  author: {
+    username: string;
+    id?: string;
+  };
+  title_de?: string;
+  description_de?: string;
+}
+
+// Load existing news posts
+async function loadAllPosts(): Promise<BlogPost[]> {
+  try {
+    const blogsDir = path.join(process.cwd(), 'src', 'blogs');
+    const files = await readdir(blogsDir);
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
+    
+    const posts = await Promise.all(jsonFiles.map(async (file) => {
+      const filePath = path.join(blogsDir, file);
+      const content = await readFile(filePath, 'utf8');
+      const blogData = JSON.parse(content);
+      
+      return {
+        id: file.split('-')[1]?.split('.')[0] || '',
+        filename: file,
+        title: blogData.title || 'Untitled Post',
+        timestamp: blogData.timestamp,
+        description: blogData.description || '',
+        imageUrl: blogData.imageUrl || '',
+        author: blogData.author || { username: 'Admin' },
+        title_de: blogData.title_de || '',
+        description_de: blogData.description_de || ''
+      };
+    }));
+    
+    return posts.sort((a, b) => 
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+  } catch (error) {
+    console.error('Error loading news posts:', error);
+    return [];
+  }
+}
+
+const posts = await loadAllPosts();
+
+// Status message handling
+const statusMessage = Astro.url.searchParams.get('status');
+let alertMessage = '';
+let alertType = 'success';
+
+if (statusMessage === 'created') {
+  alertMessage = 'Neuigkeit erfolgreich erstellt!';
+} else if (statusMessage === 'updated') {
+  alertMessage = 'Neuigkeit erfolgreich aktualisiert!';
+} else if (statusMessage === 'deleted') {
+  alertMessage = 'Neuigkeit erfolgreich gelöscht!';
+} else if (statusMessage === 'error') {
+  alertMessage = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+  alertType = 'error';
+}
+---
+
+<AdminLayout title="Neuigkeiten | Admin" section="news">
+  <div class="news-manager">
+    <header class="news-header">
+      <h1>News Manager</h1>
+      <button id="new-post-btn" class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Neu
+      </button>
+    </header>
+    
+    {alertMessage && (
+      <div class={`alert ${alertType === 'error' ? 'alert-error' : 'alert-success'}`} id="alert">
+        <span>{alertMessage}</span>
+        <button class="alert-close" aria-label="Close">&times;</button>
+      </div>
+    )}
+    
+    <!-- News Builder Section -->
+    <div id="news-builder" class="card">
+      <div class="card-header">
+        <h2 id="form-title">Neue Neuigkeit</h2>
+        <button id="close-form-btn" class="btn-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="card-body">
+        <form id="news-form" class="news-form">
+          <input type="hidden" id="post-id" name="id" value="">
+          <input type="hidden" id="edit-mode" name="editMode" value="false">
+          
+          <div class="form-tabs">
+            <button type="button" class="tab-btn active" data-tab="main">Inhalt</button>
+            <button type="button" class="tab-btn" data-tab="german">Deutsch</button>
+            <button type="button" class="tab-btn" data-tab="preview">Vorschau</button>
+          </div>
+          
+          <div class="tab-content" id="main-tab">
+            <div class="form-group">
+              <label for="title">Titel</label>
+              <input type="text" id="title" name="title" class="form-control" required placeholder="Titel der Neuigkeit">
+            </div>
+            
+            <div class="form-group">
+              <label for="description">Beschreibung</label>
+                           <div id="quill-editor" class="quill-editor"></div>
+              <input type="hidden" id="description" name="description">
+              <small class="form-text">Unterstützt: Fett, Kursiv, Links, Bilder</small>
+            </div>
+            
+            <div class="form-group">
+              <label for="imageUrl">Bild URL</label>
+              <input type="url" id="imageUrl" name="imageUrl" class="form-control" placeholder="https://example.com/image.jpg">
+            </div>
+          </div>
+          
+          <div class="tab-content hidden" id="german-tab">
+            <div class="form-group">
+              <label for="title_de">Deutscher Titel</label>
+              <input type="text" id="title_de" name="title_de" class="form-control" placeholder="Deutscher Titel (optional)">
+            </div>
+            
+            <div class="form-group">
+              <label for="description_de">Deutsche Beschreibung</label>
+              <textarea id="description_de" name="description_de" class="form-control" rows="6" placeholder="Deutsche Beschreibung (optional)"></textarea>
+            </div>
+          </div>
+          
+          <div class="tab-content hidden" id="preview-tab">
+            <div class="preview-container">
+              <div class="discord-embed">
+                <div class="embed-accent"></div>
+                <div class="embed-content">
+                  <div class="embed-header">
+                    <time class="embed-timestamp">Vorschau vom {new Date().toLocaleDateString('de-DE')}</time>
+                    <h3 class="embed-title" id="preview-title">Titel der Neuigkeit</h3>
+                  </div>
+                  
+                  <div class="embed-description" id="preview-content">
+                    Beschreibung der Neuigkeit
+                  </div>
+                  
+                  <div id="embed-image-container" class="embed-image hidden">
+                    <img id="preview-image" src="" alt="Vorschau">
+                  </div>
+                  
+                  <div class="embed-footer">
+                    <div class="embed-author">
+                      <div class="author-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                      </div>
+                      <span>Valeqs</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" id="cancel-btn" class="btn">Abbrechen</button>
+            <button type="submit" class="btn btn-primary">Speichern</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- News Manager Section -->
+    <div class="card">
+      <div class="card-header">
+        <div class="search-container">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search-posts" placeholder="Suchen..." class="search-input">
+        </div>
+      </div>
+      
+      <div class="card-body">
+        {posts.length > 0 ? (
+          <div class="news-list">
+            {posts.map(post => (
+              <div class="news-item" data-id={post.id} data-filename={post.filename}>
+                <div class="news-content">
+                  {post.imageUrl && (
+                    <div class="news-thumbnail">
+                      <img src={post.imageUrl} alt={post.title} loading="lazy" />
+                    </div>
+                  )}
+                  <div class="news-details">
+                    <h3 class="news-title">{post.title}</h3>
+                    <div class="news-meta">
+                      <span class="news-date">{new Date(post.timestamp).toLocaleDateString('de-DE')}</span>
+                      <span class="news-author">{post.author.username}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="news-actions">
+                  <button class="btn-icon edit-post-btn" data-id={post.id} title="Bearbeiten">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                  </button>
+                  <button class="btn-icon delete-post-btn" data-id={post.id} data-filename={post.filename} title="Löschen">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                      <path d="M3 6h18"></path>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <p>Keine Neuigkeiten gefunden</p>
+            <button id="empty-new-btn" class="btn btn-primary">Erste Neuigkeit erstellen</button>
+          </div>
+        )}
+      </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Löschen bestätigen</h3>
+          <button class="close-modal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Möchtest du diese Neuigkeit wirklich löschen?</p>
+          <p class="text-danger">Diese Aktion kann nicht rückgängig gemacht werden.</p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-delete" class="btn">Abbrechen</button>
+          <button id="confirm-delete" class="btn btn-danger">Löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+<script define:vars={{ posts }}>
+  let newPostBtn = null;
+  let emptyNewBtn = null;
+  let closeFormBtn = null;
+  let cancelBtn = null;
+  let newsBuilder = null;
+  let newsForm = null;
+  let formTitle = null;
+  let postId = null;
+  let editMode = null;
+  let titleInput = null;
+  let descriptionInput = null;
+  let imageUrlInput = null;
+  let titleDeInput = null;
+  let descriptionDeInput = null;
+  let previewTitle = null;
+  let previewContent = null;
+  let searchInput = null;
+  let deleteModal = null;
+  let cancelDelete = null;
+  let confirmDelete = null;
+  let closeModalBtn = null;
+  let alertClose = null;
+  let tabButtons = null;
+  let tabContents = null;
+  let currentPostToDelete = null;
+  let quillEditor = null;
+  let dailyVisitorsChart = null;
+
+  document.addEventListener('DOMContentLoaded', function() {
+    newPostBtn = document.getElementById('new-post-btn');
+    emptyNewBtn = document.getElementById('empty-new-btn');
+    closeFormBtn = document.getElementById('close-form-btn');
+    cancelBtn = document.getElementById('cancel-btn');
+    newsBuilder = document.getElementById('news-builder');
+    newsForm = document.getElementById('news-form');
+    formTitle = document.getElementById('form-title');
+    postId = document.getElementById('post-id');
+    editMode = document.getElementById('edit-mode');
+    titleInput = document.getElementById('title');
+    descriptionInput = document.getElementById('description');
+    imageUrlInput = document.getElementById('imageUrl');
+    titleDeInput = document.getElementById('title_de');
+    descriptionDeInput = document.getElementById('description_de');
+    previewTitle = document.getElementById('preview-title');
+    previewContent = document.getElementById('preview-content');
+    searchInput = document.getElementById('search-posts');
+    deleteModal = document.getElementById('delete-modal');
+    cancelDelete = document.getElementById('cancel-delete');
+    confirmDelete = document.getElementById('confirm-delete');
+    closeModalBtn = document.querySelector('.close-modal');
+    alertClose = document.querySelector('.alert-close');
+    tabButtons = document.querySelectorAll('.tab-btn');
+    tabContents = document.querySelectorAll('.tab-content');
+
+    if (typeof Quill !== 'undefined') {
+      quillEditor = new Quill('#quill-editor', {
+        theme: 'snow',
+        placeholder: 'Beschreibung der Neuigkeit...',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+          ]
+        }
+      });
+
+      if (quillEditor && descriptionInput) {
+        quillEditor.on('text-change', function() {
+          descriptionInput.value = quillEditor.root.innerHTML;
+          updateTextPreview();
+        });
+      }
+    }
+
+    if (newPostBtn) {
+      newPostBtn.onclick = function(e) {
+        e.preventDefault();
+        showNewsBuilder();
+      };
+    }
+
+    document.querySelectorAll('.edit-post-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        const id = btn.getAttribute('data-id');
+        if (id) {
+          handleEditPost(id);
+        }
+      };
+    });
+
+    console.log("Event listeners attached successfully");
+  });
+
+  function switchTab(tabId) {
+  }
+
+  function showNewsBuilder() {
+  }
+
+  function hideNewsBuilder() {
+  }
+
+  function resetForm() {
+  }
+
+  function updateImagePreview() {
+  }
+
+  function updateTextPreview() {
+  }
+
+  async function handleEditPost(id) {
+    console.log("Attempting to edit post with ID:", id);
+    try {
+      const postToEdit = posts.find(p => p && p.id === id);
+
+      if (!postToEdit) {
+        console.error(`Post with ID ${id} not found in the provided 'posts' array.`);
+        alert('Post nicht gefunden!');
+        return;
+      }
+      console.log("Found post to edit:", postToEdit);
+
+      if (!formTitle || !postId || !editMode || !titleInput || !imageUrlInput || !titleDeInput || !descriptionDeInput || !descriptionInput || !newsBuilder) {
+         console.error("One or more required form elements not found in the DOM or not assigned.");
+         alert('Fehler: Ein benötigtes Formularelement wurde nicht gefunden. Überprüfe die HTML-IDs und die Zuweisung im Skript.');
+         return;
+      }
+
+      formTitle.textContent = 'Neuigkeit bearbeiten';
+      postId.value = postToEdit.id;
+      editMode.value = 'true';
+      titleInput.value = postToEdit.title || '';
+      imageUrlInput.value = postToEdit.imageUrl || '';
+      titleDeInput.value = postToEdit.title_de || '';
+      descriptionDeInput.value = postToEdit.description_de || '';
+
+      if (quillEditor) {
+        const descriptionContent = postToEdit.description || '';
+        quillEditor.root.innerHTML = descriptionContent;
+        descriptionInput.value = descriptionContent;
+        console.log("Quill editor content set.");
+      } else {
+        console.warn("Quill editor not initialized, cannot set content.");
+        descriptionInput.value = postToEdit.description || '';
+      }
+
+      newsBuilder.style.display = 'block';
+      newsBuilder.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      console.log("News builder shown and scrolled.");
+
+      switchTab('main');
+      updateImagePreview();
+      updateTextPreview();
+      console.log("Tab switched and previews updated.");
+
+    } catch (error) {
+      console.error("Error preparing edit form:", error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      alert(`Fehler beim Laden der Post-Daten zum Bearbeiten: ${errorMessage}`);
+    }
+  }
+</script>
+
+<style>
+ :root {
+  --primary: #5865F2;
+  --success: #10b981;
+  --success-light: rgba(16, 185, 129, 0.1);
+  --danger: #ef4444;
+  --danger-light: rgba(239, 68, 68, 0.1);
+  --bg-card: rgba(35, 38, 45, 0.6);
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --bg-input: rgba(25, 28, 35, 0.6);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(60, 65, 75, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --transition: all 0.2s ease;
+}
+
+/* Layout */
+.news-manager {
+  padding-bottom: var(--spacing-lg);
+  width: 100%;
+}
+
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.news-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Cards */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow);
+  display: none; /* Hide news builder by default */
+}
+
+/* First card (news list) should always be visible */
+.card:nth-of-type(2) {
+  display: block;
+}
+
+.card-header {
+  background-color: rgba(30, 33, 40, 0.6);
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.card-body {
+  padding: var(--spacing-md);
+}
+
+/* Alerts */
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.alert-success {
+  background-color: var(--success-light);
+  border: 1px solid var(--success);
+  color: var(--success);
+}
+
+.alert-error {
+  background-color: var(--danger-light);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.alert-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: inherit;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Forms */
+.news-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--border-color);
+  margin: -1rem -1rem 1rem -1rem;
+  padding: 0 1rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab-btn.active {
+  color: var(--primary);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--primary);
+}
+
+.tab-content {
+  display: block;
+}
+
+.tab-content.hidden {
+  display: none;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.form-control {
+  padding: 0.75rem;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  width: 100%;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.25);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: var(--spacing-md);
+}
+
+/* Preview */
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: var (--spacing-md);
+}
+
+.image-preview {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  border-radius: var (--radius-sm);
+  background-color: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.content-preview {
+  background-color: var(--bg-input);
+  border-radius: var (--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.content-preview h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.content-preview a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* Discord-Embed Style für die Vorschau */
+.preview-container .discord-embed {
+  position: relative;
+  display: flex;
+  background-color: var(--bg-input);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin: 0;
+}
+
+.preview-container .embed-accent {
+  flex: 0 0 4px;
+  background-color: var(--primary);
+}
+
+.preview-container .embed-content {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preview-container .embed-header {
+  margin-bottom: 0.25rem;
+}
+
+.preview-container .embed-timestamp {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var (--text-muted);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.preview-container .embed-title {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.preview-container .embed-description {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.preview-container .embed-image {
+  margin-top: 0.5rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.preview-container .embed-image img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.preview-container .embed-footer {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.preview-container .embed-author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+}
+
+.preview-container .author-avatar {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var (--text-secondary);
+  overflow: hidden;
+}
+
+.preview-container .author-avatar svg {
+  width: 14px;
+  height: 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* News List */
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: var (--spacing-md);
+}
+
+.news-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.news-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.news-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  overflow: hidden;
+  flex: 1;
+}
+
+.news-thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.news-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-details {
+  overflow: hidden;
+}
+
+.news-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.news-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.news-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Search */
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.search-container svg {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  position: relative;
+  z-index: 5; /* Höherer z-index für Buttons */
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  position: relative;
+  z-index: 5; /* Höherer z-index für Buttons */
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+  border-color: #4338ca;
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.35rem;
+  border-radius: var (--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: var(--spacing-md);
+  text-align: center;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+}
+
+.modal-body {
+  padding: var(--spacing-md);
+}
+
+.modal-body p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+}
+
+.text-danger {
+  color: var(--danger);
+}
+
+.modal-footer {
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Quill Editor */
+.quill-editor {
+  height: 200px;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.ql-toolbar {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.ql-container {
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive Utilities */
+@media (max-width: 640px) {
+  .news-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .news-header h1 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions button {
+    width: 100%;
+  }
+  
+  .news-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .news-content {
+    margin-bottom: var(--spacing-sm);
+    width: 100%;
+  }
+  
+  .news-actions {
+    align-self: flex-end;
+  }
+  
+  .search-container {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .news-thumbnail {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .form-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-bottom: 0.75rem;
+  }
+  
+  .form-tabs::-webkit-scrollbar {
+    display: none;
+    height: 0;
+  }
+}
+
+</style>

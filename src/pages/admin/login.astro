@@ -1,0 +1,260 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import jwt from 'jsonwebtoken';
+
+let errorMessage = '';
+
+const ADMIN_USER = import.meta.env.ADMIN_USER;
+const ADMIN_PASS = import.meta.env.ADMIN_PASS;
+const SESSION_SECRET = import.meta.env.SESSION_SECRET;
+
+if (!ADMIN_USER || !ADMIN_PASS || !SESSION_SECRET) {
+  errorMessage = 'Server configuration error. Please contact the administrator.';
+}
+
+const sessionCookie = Astro.cookies.get('admin_session')?.value;
+let isAuthenticated = false;
+
+if (sessionCookie) {
+  try {
+    const payload = jwt.verify(sessionCookie, SESSION_SECRET) as { exp: number };
+    
+    const now = Math.floor(Date.now() / 1000);
+    if (payload.exp > now) {
+      isAuthenticated = true;
+      return Astro.redirect('/admin/dashboard');
+    } else {
+      Astro.cookies.delete('admin_session', { path: '/' });
+    }
+  } catch (e) {
+    Astro.cookies.delete('admin_session', { path: '/' });
+  }
+}
+
+if (Astro.request.method === 'POST') {
+  try {
+    const formData = await Astro.request.formData();
+    const email = formData.get('email')?.toString().trim().toLowerCase();
+    const password = formData.get('password')?.toString();
+
+    if (!email || !password) {
+      errorMessage = 'Email and password are required';
+    } else {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      if (email === ADMIN_USER && password === ADMIN_PASS) {
+        const token = jwt.sign(
+          { 
+            admin: true,
+            email: email
+          },
+          SESSION_SECRET,
+          { 
+            expiresIn: '24h'
+          }
+        );
+        
+        Astro.cookies.set('admin_session', token, {
+          path: '/',
+          httpOnly: true,
+          secure: import.meta.env.PROD, 
+          maxAge: 60 * 60 * 24,
+          sameSite: 'lax'
+        });
+        
+        return Astro.redirect('/admin/dashboard');
+      } else {
+        errorMessage = 'Invalid email or password';
+      }
+    }
+  } catch (e) {
+    const err = e as Error;
+    errorMessage = 'Login failed: ' + err.message;
+  }
+}
+---
+
+<Layout title="Admin Login | VALEQS">
+  <div class="admin-login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <h1>VALEQS Admin</h1>
+        <p>Login to access administrative features</p>
+      </div>
+
+      {errorMessage && (
+        <div class="alert alert-error" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          <span>{errorMessage}</span>
+        </div>
+      )}
+
+      <form method="POST" class="login-form">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            required
+            autocomplete="email"
+            placeholder="admin@example.com"
+            aria-describedby="emailHelp"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            required
+            minlength="8"
+            autocomplete="current-password"
+            placeholder="••••••••"
+          />
+        </div>
+
+        <button type="submit" class="login-button">
+          Sign In
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <a href="/" class="back-link">← Return to Main Site</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  :global(body) {
+    margin: 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+
+  .admin-login-container {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  .login-box {
+    width: min(90vw, 480px);
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 0.5rem 0;
+      color: #fff;
+    }
+    
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+    }
+  }
+
+  .alert {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+
+    &-error {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      color: #fca5a5;
+    }
+  }
+
+  .alert-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .login-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: grid;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #fff;
+      transition: all 0.2s;
+
+      &:focus {
+        outline: 2px solid #4f46e5;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 1rem;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+
+    &:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .login-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    
+    .back-link {
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.875rem;
+      
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+</style>

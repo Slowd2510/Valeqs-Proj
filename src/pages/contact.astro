@@ -1,950 +1,473 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
 import { getLanguage, loadTranslations } from '../utils/language.js';
 
-// Detect user language
+// Get language and translations
 const userLang = await getLanguage(Astro.request);
 const t = await loadTranslations(userLang);
 
-// Background slideshow images
-const screenshots = [
-  "/images/screenshots/world1.jpg",
-  "/images/screenshots/base2.jpg",
-  "/images/screenshots/spawn3.jpg",
-];
-
-// Social media links
-const socialLinks = [
-  {
-    name: t.contact.social.discord.name,
-    url: "https://discord.gg/valeqs",
-    icon: `<path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"`,
-    color: "#5865F2",
-    label: t.contact.social.discord.label,
-    highlight: true
-  },
-  {
-    name: t.contact.social.email.name,
-    url: "mailto:contact@valeqs.com",
-    icon: `<path d="M48,64 C21.5,64 0,85.5 0,112c0,15.1 7.1,29.3 19.2,38.4L236.8,313.6c11.4,8.5 27,8.5 38.4,0L492.8,150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0,176V384c0,35.3 28.7,64 64,64H448c35.3,0 64-28.7 64-64V176L294.4,339.2c-22.8,17.1-54,17.1-76.8,0L0,176z"`,
-    color: "#ffffff",
-    label: t.contact.social.email.label
-  },
-  {
-    name: t.contact.social.twitter.name,
-    url: "https://twitter.com/valeqsmc",
-    icon: `<path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"`,
-    color: "#1DA1F2",
-    label: t.contact.social.twitter.label
-  }
-];
-
-// Use FAQ items from translations
-const faqItems = t.contact.faq.items;
+const discordServerId = "1300250135892197426"; 
+const discordInviteLink = "https://discord.gg/mArhZj3gr2"; 
 ---
 
-<Layout title={t.contact.title}>
-  <!-- Background Slideshow -->
-  <div class="background-slideshow">
-    {screenshots.map((img, index) => (
-      <div class="slide" data-index={index} style={`background-image: url(${img})`}></div>
-    ))}
-    <div class="overlay"></div>
-  </div>
-  
-  <div class="page-container">
-    <!-- Navigation -->
-    <Navbar activePage="contact" />
-    
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <h1 class="hero-title" set:html={t.contact.heroTitle}></h1>
-        <p class="hero-subtitle">{t.contact.heroSubtitle}</p>
-      </div>
-    </section>
-    
-    <!-- Content Grid -->
-    <div class="content-grid">
-      <!-- Left Column: Contact Form -->
-      <section class="contact-form-section">
-        <div class="glass-card">
-          <h2>{t.contact.form.title}</h2>
+<Layout title={userLang === 'de' ? "Kontakt | VALEQS" : "Contact | VALEQS"} activePage="contact">
+  <div class="contact-container">
+    <header class="page-header">
+      <h1 class="page-title">{userLang === 'de' ? "Kontakt & Support" : "Contact & Support"}</h1>
+      <div class="title-underline"></div>
+      <p class="subtitle">
+        {userLang === 'de' 
+          ? "Unser Team steht dir für alle Fragen zur Verfügung" 
+          : "Our team is available to assist you with any questions"}
+      </p>
+    </header>
+
+    <div class="contact-grid">
+      <!-- Left Column: Team & Support Info -->
+      <section class="support-section">
+        <div class="content">
+          <h2 class="section-title">
+            {userLang === 'de' ? "Wie können wir helfen?" : "How can we help?"}
+          </h2>
           
-          <form id="contact-form" class="contact-form">
-            <div class="form-group">
-              <label for="name">{t.contact.form.name}</label>
-              <input type="text" id="name" name="name" placeholder={t.contact.form.namePlaceholder} required>
-            </div>
-            
-            <div class="form-group">
-              <label for="email">{t.contact.form.email}</label>
-              <input type="email" id="email" name="email" placeholder={t.contact.form.emailPlaceholder} required>
-            </div>
-            
-            <div class="form-group">
-              <label for="subject">{t.contact.form.subject}</label>
-              <select id="subject" name="subject" required>
-                <option value="" disabled selected>{t.contact.form.subjectSelect}</option>
-                <option value="general">{t.contact.form.subjects.general}</option>
-                <option value="support">{t.contact.form.subjects.support}</option>
-                <option value="feedback">{t.contact.form.subjects.feedback}</option>
-                <option value="report">{t.contact.form.subjects.report}</option>
-                <option value="bug">{t.contact.form.subjects.bug}</option>
-                <option value="business">{t.contact.form.subjects.business}</option>
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="message">{t.contact.form.message}</label>
-              <textarea id="message" name="message" rows="6" placeholder={t.contact.form.messagePlaceholder} required></textarea>
-            </div>
-            
-            <div class="form-group captcha-group">
-              <div class="captcha-placeholder">
-                <div class="captcha-box">{t.contact.form.captcha}</div>
+          <p class="intro-text">
+            {userLang === 'de' 
+              ? "Unser Team steht dir zur Verfügung, wenn du Fragen hast oder Unterstützung benötigst. Ob du Bugs melden möchtest, Informationen zu Rängen brauchst oder andere Anliegen hast, wir helfen dir gerne weiter." 
+              : "Our team is available to assist you with any questions or support needs. Whether you want to report bugs, need information about ranks, or have other concerns, we're here to help."}
+          </p>
+          
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <div class="method-details">
+                <h3>Email</h3>
+                <a href="mailto:kontakt@valeqs.de">kontakt@valeqs.de</a>
               </div>
             </div>
             
-            <button type="submit" class="submit-button">
-              <span class="btn-text">{t.contact.form.send}</span>
-              <span class="btn-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+            <div class="contact-method">
+              <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                 </svg>
-              </span>
-            </button>
-          </form>
+              </div>
+              <div class="method-details">
+                <h3>Discord</h3>
+                <a href={discordInviteLink} target="_blank" rel="noopener noreferrer">
+                  {userLang === 'de' ? "Direkt zum Discord Server" : "Join our Discord Server"}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bereich für Kontaktgründe - alles in einem Kasten -->
+          <div class="contact-reasons-container">
+            <h3 class="subheading">{userLang === 'de' ? "Wann solltest du uns kontaktieren?" : "When should you contact us?"}</h3>
+            
+            <div class="contact-reasons-box">
+              <div class="reason-item">
+                <div class="reason-header">
+                  <h4>{userLang === 'de' ? "Bugreports" : "Bug Reports"}</h4>
+                </div>
+                <p>{userLang === 'de' 
+                  ? "Falls du Fehler im Spiel entdeckst, beschreibe bitte genau, was passiert ist, welche Schritte dazu geführt haben und ob du Screenshots oder Videos davon hast." 
+                  : "If you discover errors in the game, please describe exactly what happened, what steps led to it, and if you have screenshots or videos of it."}
+                </p>
+              </div>
+              
+              <div class="reason-divider"></div>
+              
+              <div class="reason-item">
+                <div class="reason-header">
+                  <h4>{userLang === 'de' ? "Fragen zu Rängen" : "Rank Questions"}</h4>
+                </div>
+                <p>{userLang === 'de' 
+                  ? "Wenn du mehr über Premium oder King erfahren möchtest, kontaktiere uns." 
+                  : "If you would like to learn more about Premium or King ranks, please contact us."}
+                </p>
+              </div>
+              
+              <div class="reason-divider"></div>
+              
+              <div class="reason-item">
+                <div class="reason-header">
+                  <h4>{userLang === 'de' ? "Sonstige Anliegen" : "Other Inquiries"}</h4>
+                </div>
+                <p>{userLang === 'de' 
+                  ? "Bei jeglichen Fragen oder Vorschlägen stehen wir dir ebenfalls gerne zur Verfügung." 
+                  : "For any questions or suggestions, we are also at your disposal."}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <p class="note">
+            {userLang === 'de' 
+              ? "Wir bemühen uns, alle Anfragen innerhalb von 24 Stunden zu beantworten." 
+              : "We strive to respond to all inquiries within 24 hours."}
+          </p>
         </div>
       </section>
       
-      <!-- Right Column: Social and Discord -->
-      <section class="social-section">
-        <!-- Discord Embed -->
-        <div class="discord-card">
-          <div class="discord-header">
-            <svg class="discord-logo" viewBox="0 0 127.14 96.36" width="40" height="30">
-              <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z" fill="#5865F2"/>
-            </svg>
-            <h2>{t.contact.discord.title}</h2>
-          </div>
-          
-          <div class="discord-content">
-            <p>{t.contact.discord.description}</p>
-            
-            <div class="discord-stats">
-              <div class="stat">
-                <div class="stat-value">5,000+</div>
-                <div class="stat-label">{t.contact.discord.members}</div>
-              </div>
-              <div class="stat">
-                <div class="stat-value">500+</div>
-                <div class="stat-label">{t.contact.discord.online}</div>
-              </div>
-            </div>
-            
-            <a href="https://discord.gg/valeqs" target="_blank" rel="noopener" class="discord-join-button">
-              {t.contact.discord.joinButton}
-            </a>
-          </div>
+      <!-- Right Column: Discord Widget -->
+      <section class="discord-section">
+        <h2 class="section-title">{userLang === 'de' ? "Unser Community Server" : "Our Community Server"}</h2>
+        
+        <div class="discord-widget-container">
+          <iframe 
+            src={`https://discord.com/widget?id=${discordServerId}&theme=dark`}
+            width="100%" 
+            height="500" 
+            allowtransparency="true" 
+            frameborder="0" 
+            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            title="Discord Server Widget"
+          ></iframe>
         </div>
         
-        <!-- Social Links -->
-        <div class="social-links">
-          {socialLinks.map(link => (
-            <a href={link.url} class={`social-link ${link.highlight ? 'highlight' : ''}`} style={`--social-color: ${link.color}`} target="_blank" rel="noopener noreferrer">
-              <div class="social-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
-                  {link.icon}
-                </svg>
-              </div>
-              <div class="social-details">
-                <span class="social-name">{link.name}</span>
-                <span class="social-label">{link.label}</span>
-              </div>
-            </a>
-          ))}
-        </div>
-        
-        <!-- Quick FAQ -->
-        <div class="quick-faq">
-          <h3>{t.contact.faq.title}</h3>
-          
-          <div class="faq-list">
-            {faqItems.map((item, index) => (
-              <div class="faq-item">
-                <div class="faq-question" data-faq={index}>
-                  <span class="question-text">{item.question}</span>
-                  <span class="question-icon">
-                    <svg class="icon-plus" viewBox="0 0 24 24" width="20" height="20">
-                      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
-                    </svg>
-                    <svg class="icon-minus" viewBox="0 0 24 24" width="20" height="20">
-                      <path d="M19 13H5v-2h14v2z" fill="currentColor"/>
-                    </svg>
-                  </span>
-                </div>
-                <div class="faq-answer">
-                  <p>{item.answer}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <a href={discordInviteLink} class="discord-button" target="_blank" rel="noopener noreferrer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          {userLang === 'de' ? "Server beitreten" : "Join Server"}
+        </a>
       </section>
     </div>
-    
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div class="footer-content">
-        <div class="footer-info">
-          <span>{t.footer.copyright}</span>
-          <span>{t.footer.disclaimer}</span>
-        </div>
-        
-        <div class="footer-links">
-          <a href="/terms">{t.footer.terms}</a>
-          <a href="/privacy">{t.footer.privacy}</a>
-          <a href="/rules">{t.footer.rules}</a>
-        </div>
-      </div>
-    </footer>
   </div>
 </Layout>
 
-<script>
-  // Background Slideshow Functionality
-  document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
-    
-    // Initialize: hide all slides except the first one
-    slides.forEach((slide, index) => {
-      if (index !== 0) {
-        slide.classList.add('inactive');
-      }
-    });
-    
-    function rotateSlides() {
-      // Fade out current slide
-      slides[currentSlide].classList.add('fade-out');
-      
-      setTimeout(() => {
-        // Hide current slide
-        slides[currentSlide].classList.add('inactive');
-        slides[currentSlide].classList.remove('fade-out');
-        
-        // Move to next slide
-        currentSlide = (currentSlide + 1) % slides.length;
-        
-        // Show and fade in next slide
-        slides[currentSlide].classList.remove('inactive');
-        slides[currentSlide].classList.add('fade-in');
-        
-        setTimeout(() => {
-          slides[currentSlide].classList.remove('fade-in');
-        }, 1000);
-      }, 1000);
-    }
-    
-    // Rotate slides every 8 seconds
-    setInterval(rotateSlides, 8000);
-    
-    // FAQ accordion functionality
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    
-    faqQuestions.forEach(question => {
-      question.addEventListener('click', () => {
-        const faqItem = question.parentElement;
-        const answer = question.nextElementSibling;
-        
-        if (!faqItem || !answer) return;
-        
-        const isActive = faqItem.classList.contains('active');
-        
-        // Close all FAQs
-        document.querySelectorAll('.faq-item').forEach(item => {
-          item.classList.remove('active');
-          const answerEl = item.querySelector('.faq-answer');
-          if (answerEl instanceof HTMLElement) {
-            answerEl.style.maxHeight = '';
-          }
-        });
-        
-        // If the clicked item wasn't active, open it
-        if (!isActive) {
-          faqItem.classList.add('active');
-          if (answer instanceof HTMLElement) {
-            answer.style.maxHeight = answer.scrollHeight + 'px';
-          }
-        }
-      });
-    });
-    
-    // Contact form submission handling
-    const contactForm = document.getElementById('contact-form');
-    contactForm?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      // Get form data
-      const formData = new FormData(contactForm as HTMLFormElement);
-      const data = Object.fromEntries(formData.entries());
-      
-      // Simple validation
-      if (!data.name || !data.email || !data.subject || !data.message) {
-        alert('Please fill in all required fields');
-        return;
-      }
-      
-      // In a real application, you would send this data to your backend
-      console.log('Form submitted:', data);
-      
-      // Show success message
-      const submitButton = contactForm.querySelector('.submit-button');
-      if (submitButton) {
-        const originalText = submitButton.innerHTML;
-        submitButton.innerHTML = `
-          <span class="btn-text">Message Sent!</span>
-          <span class="btn-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
-            </svg>
-          </span>
-        `;
-        if (submitButton instanceof HTMLButtonElement) {
-          submitButton.disabled = true;
-        }
-        submitButton.classList.add('success');
-        
-        // Reset form after delay
-        setTimeout(() => {
-          (contactForm as HTMLFormElement).reset();
-          submitButton.innerHTML = originalText;
-          if (submitButton instanceof HTMLButtonElement) {
-            submitButton.disabled = false;
-          }
-          submitButton.classList.remove('success');
-        }, 3000);
-      }
-    });
-  });
-</script>
-
 <style>
-  /* Variables */
   :root {
-    /* Discord-inspired colors */
-    --bg-primary: #36393f;
-    --bg-secondary: #2f3136;
-    --bg-tertiary: #202225;
-    
-    --text-normal: #dcddde;
-    --text-muted: #8e9297;
-    --text-heading: #ffffff;
-    
-    --interactive: #b9bbbe;
-    --interactive-hover: #dcddde;
-    --interactive-active: #ffffff;
-    
-    --discord-color: #5865f2;
-    --discord-hover: #4752c4;
-    
-    --accent-white: #ffffff;
-    --accent-white-glow: rgba(255, 255, 255, 0.3);
-    
-    --error-color: #ed4245;
-    --success-color: #3ba55c;
-    
-    /* Animation speeds */
-    --transition-fast: 0.2s;
-    --transition-medium: 0.3s;
-    --transition-slow: 0.5s;
+    --accent-subtle: #445166;
+    --accent-medium: #586690;
+    --accent-strong: #5865b5;
+    --card-bg: rgba(30, 33, 42, 0.7);
+    --card-border: rgba(60, 73, 94, 0.4);
+    --text-primary: #e3e5e8;
+    --text-secondary: #b9bbbe;
+    --text-muted: #8b919a;
+    --bg-overlay: rgba(20, 22, 30, 0.6);
+    --transition-standard: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    --shadow-subtle: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 5px 20px rgba(0, 0, 0, 0.15);
+    --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.2);
   }
-  
-  /* Background Slideshow */
-  .background-slideshow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-  }
-  
-  .slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: opacity 1s ease;
-  }
-  
-  .slide.inactive {
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .slide.fade-in {
-    animation: fadeIn 1.5s forwards;
-  }
-  
-  .slide.fade-out {
-    animation: fadeOut 1.5s forwards;
-  }
-  
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(32, 34, 37, 0.85) 0%, rgba(15, 17, 19, 0.95) 100%);
-    z-index: -1;
-  }
-  
-  /* Page Container */
-  .page-container {
-    width: 100%;
-    max-width: 1400px;
+
+  /* Page Layout */
+  .contact-container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1.5rem;
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    padding: 3rem 1.5rem 5rem;
   }
   
-  /* Hero Section */
-  .hero-section {
-    padding: 6rem 0 3rem;
+  .page-header {
     text-align: center;
-  }
-  
-  .hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    color: var(--text-heading);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: fadeSlideUp 0.6s 0.2s forwards;
-  }
-  
-  .hero-title .highlight {
-    color: var(--accent-white);
-    text-shadow: 0 0 10px var(--accent-white-glow);
-  }
-  
-  .hero-subtitle {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    margin: 0 auto;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: fadeSlideUp 0.6s 0.4s forwards;
-  }
-  
-  /* Content Grid */
-  .content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
     margin-bottom: 4rem;
   }
   
-  /* Glass Card Effect */
-  .glass-card {
-    background: rgba(47, 49, 54, 0.7);
-    border-radius: 16px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    height: 100%;
-    transition: all var(--transition-medium);
-  }
-  
-  .glass-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  /* Contact Form Section */
-  .contact-form-section {
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeSlideUp 0.6s 0.6s forwards;
-  }
-  
-  .contact-form-section h2 {
-    font-size: 1.8rem;
+  .page-title {
+    font-size: 2.75rem;
     font-weight: 700;
-    color: var(--text-heading);
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  
+  .title-underline {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-medium), var(--accent-strong));
+    margin: 0 auto 1.5rem;
+    border-radius: 3px;
+  }
+  
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* Grid Layout for the main contact content */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* Support Section Styles */
+  .section-title {
+    font-size: 1.75rem;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .form-group label {
-    font-size: 0.9rem;
     font-weight: 600;
-    color: var(--text-normal);
+    position: relative;
+    padding-bottom: 0.5rem;
   }
   
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    background-color: var(--bg-tertiary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    color: var(--text-normal);
-    font-family: inherit;
-    font-size: 1rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  .section-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-medium);
+  }
+
+  .support-section {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--card-border);
   }
   
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-    outline: none;
+  .intro-text {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
   }
-  
-  .form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-  }
-  
-  .captcha-group {
-    margin-top: 0.5rem;
-  }
-  
-  .captcha-placeholder {
+
+  /* Contact Methods Section */
+  .contact-methods {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background-color: var(--bg-overlay);
+    border-radius: 8px;
   }
   
-  .captcha-box {
-    background-color: var(--bg-tertiary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: 0.75rem 1.5rem;
+  .contact-method {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--accent-subtle);
+    color: var(--text-primary);
+  }
+  
+  .icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .method-details h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+  
+  .method-details a {
+    color: var(--accent-medium);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: var(--transition-standard);
+    border-bottom: 1px solid transparent;
+  }
+  
+  .method-details a:hover {
+    color: var(--accent-strong);
+    border-bottom-color: var(--accent-strong);
+  }
+
+  /* Subheading */
+  .subheading {
+    font-size: 1.4rem;
+    color: var(--text-primary);
+    margin: 0.5rem 0 1.5rem;
+    font-weight: 600;
+  }
+
+  /* Contact Reasons Section - Gemeinsamer Kasten */
+  .contact-reasons-container {
+    margin-bottom: 2.5rem;
+  }
+
+  .contact-reasons-box {
+    background-color: var(--bg-overlay);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow-subtle);
+    transition: var(--transition-standard);
+  }
+
+  .contact-reasons-box:hover {
+    border-color: var(--accent-subtle);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .reason-item {
+    padding: 1rem 0;
+  }
+
+  .reason-divider {
+    height: 1px;
+    background-color: var(--card-border);
+    margin: 1rem 0;
+  }
+
+  .reason-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .reason-header h4 {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .reason-item p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  /* Responsive Anpassungen */
+  @media (max-width: 480px) {
+    .reason-item p {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .note {
+    font-style: italic;
     color: var(--text-muted);
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--bg-overlay);
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+
+  /* Discord Section Styles */
+  .discord-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--card-border);
+  }
+  
+  .discord-section .section-title {
+    align-self: flex-start;
+  }
+  
+  .discord-widget-container {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: var(--shadow-strong);
+    transition: var(--transition-standard);
+    border: 1px solid var(--card-border);
+  }
+  
+  .discord-widget-container:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-strong), 0 0 20px rgba(88, 101, 181, 0.15);
+  }
+  
+  .discord-button {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
-  
-  .submit-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem 1.5rem;
-    background-color: var(--accent-white);
-    color: #000;
-    font-weight: 700;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  
-  .submit-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--accent-white-glow);
-  }
-  
-  .submit-button:active {
-    transform: translateY(0);
-  }
-  
-  .submit-button.success {
-    background-color: var(--success-color);
-    color: white;
-  }
-  
-  /* Social Section */
-  .social-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeSlideUp 0.6s 0.8s forwards;
-  }
-  
-  /* Discord Card */
-  .discord-card {
-    background: rgba(88, 101, 242, 0.15);
-    border: 1px solid rgba(88, 101, 242, 0.3);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  
-  .discord-header {
-    background-color: var(--discord-color);
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .discord-header h2 {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-  }
-  
-  .discord-logo {
-    flex-shrink: 0;
-  }
-  
-  .discord-content {
-    padding: 1.5rem;
-  }
-  
-  .discord-content p {
-    color: var(--text-normal);
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-  }
-  
-  .discord-stats {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .discord-stats .stat {
-    text-align: center;
-  }
-  
-  .discord-stats .stat-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-heading);
-  }
-  
-  .discord-stats .stat-label {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-  }
-  
-  .discord-join-button {
-    display: block;
-    background-color: var(--discord-color);
-    color: white;
-    text-align: center;
-    padding: 0.75rem;
-    border-radius: 4px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color var(--transition-fast), transform var(--transition-fast);
-  }
-  
-  .discord-join-button:hover {
-    background-color: var(--discord-hover);
-    transform: translateY(-2px);
-  }
-  
-  /* Social Links */
-  .social-links {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .social-link {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    text-decoration: none;
-    background: rgba(47, 49, 54, 0.7);
+    background-color: var(--accent-subtle);
+    color: var(--text-primary);
+    padding: 0.9rem 1.75rem;
     border-radius: 8px;
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all var(--transition-fast);
-  }
-  
-  .social-link:hover {
-    transform: translateY(-2px);
-    background: rgba(47, 49, 54, 0.9);
-    border-color: var(--social-color, rgba(255, 255, 255, 0.1));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .social-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--social-color, #ffffff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    flex-shrink: 0;
-  }
-  
-  .social-details {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .social-name {
+    text-decoration: none;
     font-weight: 600;
-    color: var(--text-heading);
-    font-size: 1.1rem;
-  }
-  
-  .social-label {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-  
-  .social-link.highlight {
-    background: linear-gradient(to right, rgba(88, 101, 242, 0.15), rgba(47, 49, 54, 0.7));
-  }
-  
-  /* Quick FAQ */
-  .quick-faq {
+    transition: var(--transition-standard);
+    border: 1px solid var(--accent-medium);
     margin-top: 1rem;
-    background: rgba(47, 49, 54, 0.7);
-    border-radius: 16px;
-    padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  .quick-faq h3 {
-    font-size: 1.3rem;
-    color: var(--text-heading);
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-  }
-  
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .faq-item {
-    background-color: var(--bg-tertiary);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .faq-question {
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: background var(--transition-fast);
-  }
-  
-  .faq-question:hover {
-    background: rgba(255, 255, 255, 0.05);
-  }
-  
-  .question-text {
-    font-weight: 600;
     font-size: 1rem;
-    color: var(--text-heading);
   }
   
-  .question-icon {
-    flex-shrink: 0;
-    height: 24px;
-    width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: var(--accent-white);
+  .discord-button:hover {
+    background-color: var(--accent-medium);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
   }
   
-  .icon-plus, .icon-minus {
-    position: absolute;
-    transition: opacity var(--transition-fast), transform var(--transition-fast);
+  .discord-button svg {
+    width: 20px;
+    height: 20px;
   }
-  
-  .icon-minus {
-    opacity: 0;
-    transform: rotate(-90deg);
-  }
-  
-  .faq-item.active .icon-plus {
-    opacity: 0;
-    transform: rotate(90deg);
-  }
-  
-  .faq-item.active .icon-minus {
-    opacity: 1;
-    transform: rotate(0);
-  }
-  
-  .faq-answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height var(--transition-medium);
-    padding: 0 1rem;
-  }
-  
-  .faq-answer p {
-    color: var(--text-muted);
-    line-height: 1.6;
-    padding-bottom: 1rem;
-    margin: 0;
-  }
-  
-  /* Footer */
-  .site-footer {
-    margin-top: auto;
-    padding: 2.5rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .footer-info {
-    display: flex;
-    flex-direction: column;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-  
-  .footer-links {
-    display: flex;
-    gap: 1.5rem;
-  }
-  
-  .footer-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color var(--transition-fast);
-  }
-  
-  .footer-links a:hover {
-    color: var(--text-normal);
-  }
-  
-  /* Animations */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-  
-  @keyframes fadeSlideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* Responsive Styles */
+
+  /* Responsive Design */
   @media (max-width: 1024px) {
-    .hero-title {
-      font-size: 3rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .hero-section {
-      padding: 5rem 0 3rem;
-    }
-    
-    .hero-title {
-      font-size: 2.5rem;
-    }
-    
-    .content-grid {
+    .contact-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 2.5rem;
     }
     
-    .social-section {
+    .discord-section {
       order: -1;
     }
   }
   
+  @media (max-width: 768px) {
+    .contact-container {
+      padding: 2rem 1rem 3rem;
+    }
+    
+    .page-title {
+      font-size: 2.25rem;
+    }
+    
+    .support-section,
+    .discord-section {
+      padding: 2rem 1.5rem;
+    }
+    
+    .contact-reasons {
+      grid-template-columns: 1fr;
+    }
+  }
+  
   @media (max-width: 480px) {
-    .hero-title {
-      font-size: 2rem;
+    .page-title {
+      font-size: 1.75rem;
     }
     
-    .glass-card,
-    .discord-card,
-    .quick-faq {
-      padding: 1.25rem;
+    .subtitle {
+      font-size: 1rem;
     }
     
-    .discord-header {
-      padding: 1.25rem;
-    }
-    
-    .discord-header h2 {
-      font-size: 1.3rem;
-    }
-    
-    .discord-stats {
-      gap: 1rem;
-    }
-    
-    .social-link {
-      padding: 0.75rem;
-    }
-    
-    .social-icon {
-      width: 36px;
-      height: 36px;
-    }
-    
-    .footer-content {
+    .contact-method {
       flex-direction: column;
-      gap: 1.5rem;
-      align-items: flex-start;
+      text-align: center;
+    }
+    
+    .icon {
+      margin-bottom: 0.5rem;
     }
   }
 </style>

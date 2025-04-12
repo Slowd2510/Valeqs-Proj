@@ -1,0 +1,1492 @@
+{
+  "views": [
+    {
+      "timestamp": "2025-04-12T23:05:19.235Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:25.643Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/contact",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:25.953Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:25.962Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:26.010Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:26.235Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:26.241Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:26.261Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:26.994Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:28.380Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 9
+    },
+    {
+      "timestamp": "2025-04-12T23:05:28.875Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:05:28.881Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:05:28.921Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:29.270Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:30.292Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 11
+    },
+    {
+      "timestamp": "2025-04-12T23:05:30.304Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 11
+    },
+    {
+      "timestamp": "2025-04-12T23:05:30.315Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:05:35.898Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 5
+    },
+    {
+      "timestamp": "2025-04-12T23:05:35.915Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 5
+    },
+    {
+      "timestamp": "2025-04-12T23:06:07.710Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 38
+    },
+    {
+      "timestamp": "2025-04-12T23:06:07.720Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 38
+    },
+    {
+      "timestamp": "2025-04-12T23:06:07.750Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:08.726Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:08.740Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:08.765Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:09.794Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:06:09.800Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:06:09.854Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:10.503Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:10.508Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:10.534Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:10.959Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:10.996Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.041Z",
+      "page": "/contact",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.546Z",
+      "page": "/contact",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.551Z",
+      "page": "/contact",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.576Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/contact",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.895Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.900Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:11.921Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:12.442Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:12.447Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:12.477Z",
+      "page": "/contact",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:12.990Z",
+      "page": "/contact",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:12.995Z",
+      "page": "/contact",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:13.027Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/contact",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:13.825Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:13.830Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:13.857Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:14.518Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:14.531Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:14.573Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:15.546Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:24.313Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 9
+    },
+    {
+      "timestamp": "2025-04-12T23:06:24.318Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 9
+    },
+    {
+      "timestamp": "2025-04-12T23:06:24.349Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:36.196Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 11
+    },
+    {
+      "timestamp": "2025-04-12T23:06:36.381Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 12
+    },
+    {
+      "timestamp": "2025-04-12T23:06:36.430Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:06:39.120Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:06:39.150Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:06:39.199Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:07:39.811Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 60
+    },
+    {
+      "timestamp": "2025-04-12T23:09:43.179Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 183
+    },
+    {
+      "timestamp": "2025-04-12T23:09:43.203Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:09:48.172Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 4
+    },
+    {
+      "timestamp": "2025-04-12T23:09:48.194Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:09:51.173Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:09:51.196Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:08.705Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 17
+    },
+    {
+      "timestamp": "2025-04-12T23:10:08.711Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 17
+    },
+    {
+      "timestamp": "2025-04-12T23:10:08.733Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:10.063Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:10:25.292Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 16
+    },
+    {
+      "timestamp": "2025-04-12T23:10:25.301Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 16
+    },
+    {
+      "timestamp": "2025-04-12T23:10:25.325Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:25.647Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:25.686Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:25.731Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:26.849Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:10:26.855Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:10:26.880Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.137Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.159Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.177Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.394Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.401Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.443Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.609Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.623Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:27.675Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:10:28.192Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:14:16.173Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 228
+    },
+    {
+      "timestamp": "2025-04-12T23:14:16.189Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:14:17.186Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:14:17.218Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:15:00.187Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 42
+    },
+    {
+      "timestamp": "2025-04-12T23:15:00.218Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:18.167Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 77
+    },
+    {
+      "timestamp": "2025-04-12T23:16:18.190Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:19.170Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:19.189Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:20.184Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:20.199Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:21.168Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:21.195Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:23.180Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:16:23.216Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:24.169Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:16:24.188Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:17:28.170Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 63
+    },
+    {
+      "timestamp": "2025-04-12T23:17:28.192Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:17:31.168Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:17:31.191Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:18:04.171Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 32
+    },
+    {
+      "timestamp": "2025-04-12T23:18:04.194Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:18:36.170Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 31
+    },
+    {
+      "timestamp": "2025-04-12T23:18:36.190Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:19:12.175Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 35
+    },
+    {
+      "timestamp": "2025-04-12T23:19:12.195Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:19:51.175Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 38
+    },
+    {
+      "timestamp": "2025-04-12T23:19:51.201Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:22:03.182Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 131
+    },
+    {
+      "timestamp": "2025-04-12T23:22:03.215Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:22:24.182Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 20
+    },
+    {
+      "timestamp": "2025-04-12T23:22:24.205Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:23:06.170Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 41
+    },
+    {
+      "timestamp": "2025-04-12T23:23:06.198Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:03.744Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 597
+    },
+    {
+      "timestamp": "2025-04-12T23:33:03.788Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 597
+    },
+    {
+      "timestamp": "2025-04-12T23:33:03.841Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:04.976Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:33:04.983Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:33:05.001Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/terms",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:05.910Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:05.980Z",
+      "page": "/terms",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:06.030Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:06.635Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:06.668Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:06.705Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:33:16.333Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 9
+    },
+    {
+      "timestamp": "2025-04-12T23:33:16.357Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 9
+    },
+    {
+      "timestamp": "2025-04-12T23:33:16.398Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:34:57.071Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 100
+    },
+    {
+      "timestamp": "2025-04-12T23:34:57.099Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 100
+    },
+    {
+      "timestamp": "2025-04-12T23:34:57.153Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:35:14.821Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 17
+    },
+    {
+      "timestamp": "2025-04-12T23:35:14.845Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 17
+    },
+    {
+      "timestamp": "2025-04-12T23:35:14.886Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:35:16.989Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:35:17.060Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 2
+    },
+    {
+      "timestamp": "2025-04-12T23:35:18.815Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:35:20.316Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:35:20.382Z",
+      "page": "/info",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:35:20.403Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/info",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:35:25.830Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 5
+    },
+    {
+      "timestamp": "2025-04-12T23:38:04.195Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 163
+    },
+    {
+      "timestamp": "2025-04-12T23:38:04.268Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:38:46.182Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 41
+    },
+    {
+      "timestamp": "2025-04-12T23:38:46.248Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:41:46.186Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 179
+    },
+    {
+      "timestamp": "2025-04-12T23:41:46.253Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:41:50.163Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 3
+    },
+    {
+      "timestamp": "2025-04-12T23:41:50.169Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 3
+    },
+    {
+      "timestamp": "2025-04-12T23:41:50.184Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:41:51.506Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:41:51.622Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:41:52.849Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:41:54.694Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:41:54.699Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:41:55.815Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:41:57.171Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:41:57.228Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 1
+    },
+    {
+      "timestamp": "2025-04-12T23:41:58.158Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:44:24.295Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 146
+    },
+    {
+      "timestamp": "2025-04-12T23:44:24.323Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 146
+    },
+    {
+      "timestamp": "2025-04-12T23:44:24.366Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:50:24.342Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 359
+    },
+    {
+      "timestamp": "2025-04-12T23:52:41.409Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 497
+    },
+    {
+      "timestamp": "2025-04-12T23:52:53.193Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 508
+    },
+    {
+      "timestamp": "2025-04-12T23:52:53.264Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    },
+    {
+      "timestamp": "2025-04-12T23:53:20.404Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 26
+    },
+    {
+      "timestamp": "2025-04-12T23:53:20.604Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "direct",
+      "timeOnPage": 27
+    },
+    {
+      "timestamp": "2025-04-12T23:53:20.656Z",
+      "page": "/",
+      "sessionId": "50be82ca-4f5d-42a2-9a5c-428ba550c878",
+      "browser": "Chrome",
+      "referrer": "http://localhost:4321/",
+      "timeOnPage": 0
+    }
+  ],
+  "pages": {
+    "/": 66,
+    "/info": 46,
+    "/terms": 66,
+    "/contact": 6
+  },
+  "browsers": {
+    "Chrome": 184
+  },
+  "referrers": {
+    "http://localhost:4321/": 23,
+    "http://localhost:4321/contact": 3,
+    "direct": 117,
+    "http://localhost:4321/info": 15,
+    "http://localhost:4321/terms": 26
+  }
+}

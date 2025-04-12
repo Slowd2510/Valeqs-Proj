@@ -1,0 +1,570 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const { searchParams } = Astro.url;
+const productId = searchParams.get('product') || '';
+const productName = searchParams.get('name') || 'Premium';
+const productPrice = searchParams.get('price') || '5';
+
+// If no product specified, redirect back to ranks
+if (!productId) {
+  return Astro.redirect('/ranks');
+}
+---
+
+<Layout title={`Purchase ${productName} Rank | VALEQS`}>
+  <div class="page-container">
+    <div class="purchase-container">
+      <h1 class="page-title">Purchase {productName} Rank</h1>
+      
+      <div class="purchase-steps">
+        <div class="step active" data-step="1"></div>
+        <div class="step-connector"></div>
+        <div class="step" data-step="2"></div>
+        <div class="step-connector"></div>
+        <div class="step" data-step="3"></div>
+      </div>
+      
+      <div class="purchase-panel step-panel" id="username-panel">
+        <div class="product-summary">
+          <div class="product-info">
+            <div class="info-group">
+              <span class="info-label">Selected rank:</span>
+              <span class="info-value">{productName}</span>
+            </div>
+            <div class="info-group">
+              <span class="info-label">Price:</span>
+              <span class="info-value">€{productPrice}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-section">
+          <div class="form-group">
+            <label for="minecraft-username">Minecraft Username</label>
+            <input 
+              type="text" 
+              id="minecraft-username" 
+              name="minecraft-username" 
+              placeholder="Your in-game name" 
+              required
+            >
+            <div class="input-error" id="username-error"></div>
+          </div>
+          
+          <div class="button-group">
+            <a href="/ranks" class="secondary-button">Cancel</a>
+            <button type="button" id="continue-button" class="primary-button" disabled>Continue</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="purchase-panel step-panel hidden" id="confirmation-panel">
+        <h2 class="panel-title">Confirm your Minecraft account</h2>
+        
+        <div class="character-preview">
+          <div class="character-skin">
+            <img id="skin-head" src="" alt="Your Minecraft skin">
+            <div class="skin-loading">
+              <div class="spinner"></div>
+            </div>
+          </div>
+          <div class="character-name" id="minecraft-name-display">Username</div>
+        </div>
+        
+        <div class="button-group">
+          <button type="button" id="back-button" class="secondary-button">Back</button>
+          <button type="button" id="confirm-button" class="primary-button">Yes, this is me</button>
+        </div>
+      </div>
+      
+      <div class="purchase-panel step-panel hidden" id="payment-panel">
+        <h2 class="panel-title">Redirecting to payment</h2>
+        
+        <div class="redirect-loading">
+          <div class="spinner large"></div>
+          <p>Preparing your order...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ productId, productName, productPrice }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Form elements
+    const usernameInput = document.getElementById('minecraft-username');
+    const usernameError = document.getElementById('username-error');
+    const continueButton = document.getElementById('continue-button');
+    const backButton = document.getElementById('back-button');
+    const confirmButton = document.getElementById('confirm-button');
+    
+    // Step panels
+    const usernamePanel = document.getElementById('username-panel');
+    const confirmationPanel = document.getElementById('confirmation-panel');
+    const paymentPanel = document.getElementById('payment-panel');
+    
+    // Character preview
+    const skinHead = document.getElementById('skin-head');
+    const skinLoading = document.querySelector('.skin-loading');
+    const nameDisplay = document.getElementById('minecraft-name-display');
+    
+    // Step indicators
+    const stepIndicators = document.querySelectorAll('.purchase-steps .step');
+    
+    // Store Minecraft username
+    let minecraftUsername = '';
+    
+    // Function to show a specific step
+    function showStep(step) {
+      // Hide all panels
+      usernamePanel.classList.add('hidden');
+      confirmationPanel.classList.add('hidden');
+      paymentPanel.classList.add('hidden');
+      
+      // Show selected panel
+      if (step === 1) {
+        usernamePanel.classList.remove('hidden');
+      } else if (step === 2) {
+        confirmationPanel.classList.remove('hidden');
+      } else if (step === 3) {
+        paymentPanel.classList.remove('hidden');
+      }
+      
+      // Update step indicators
+      stepIndicators.forEach(indicator => {
+        const stepNum = parseInt(indicator.dataset.step);
+        
+        if (stepNum < step) {
+          indicator.classList.remove('active');
+          indicator.classList.add('completed');
+        } else if (stepNum === step) {
+          indicator.classList.add('active');
+          indicator.classList.remove('completed');
+        } else {
+          indicator.classList.remove('active', 'completed');
+        }
+      });
+    }
+    
+    // Username validation
+    if (usernameInput) {
+      usernameInput.addEventListener('input', () => {
+        const username = usernameInput.value.trim();
+        const isValid = /^[a-zA-Z0-9_]{3,16}$/.test(username);
+        
+        if (!username) {
+          usernameError.textContent = '';
+          continueButton.disabled = true;
+        } else if (!isValid) {
+          usernameError.textContent = 'Username must be 3-16 characters and contain only letters, numbers, and underscores.';
+          continueButton.disabled = true;
+        } else {
+          usernameError.textContent = '';
+          continueButton.disabled = false;
+        }
+      });
+    }
+    
+    // Continue to confirmation step
+    if (continueButton) {
+      continueButton.addEventListener('click', () => {
+        minecraftUsername = usernameInput.value.trim();
+        
+        // Show loading state
+        if (skinLoading) {
+          skinLoading.classList.add('active');
+        }
+        
+        // Update character name display
+        if (nameDisplay) {
+          nameDisplay.textContent = minecraftUsername;
+        }
+        
+        // Load Minecraft head
+        if (skinHead) {
+          // Clear previous image
+          skinHead.src = '';
+          
+          // Add timestamp to prevent caching
+          const timestamp = new Date().getTime();
+          skinHead.src = `https://mc-heads.net/avatar/${minecraftUsername}/100?timestamp=${timestamp}`;
+          
+          // Handle image load
+          skinHead.onload = () => {
+            if (skinLoading) {
+              skinLoading.classList.remove('active');
+            }
+            showStep(2);
+          };
+          
+          // Handle image error
+          skinHead.onerror = () => {
+            if (skinLoading) {
+              skinLoading.classList.remove('active');
+            }
+            showStep(2);
+          };
+        } else {
+          showStep(2);
+        }
+      });
+    }
+    
+    // Go back to username step
+    if (backButton) {
+      backButton.addEventListener('click', () => {
+        showStep(1);
+      });
+    }
+    
+    // Proceed to payment
+    if (confirmButton) {
+      confirmButton.addEventListener('click', () => {
+        showStep(3);
+        
+        // Simulate API call and redirect
+        setTimeout(() => {
+          // In production, replace with actual payment URL
+          window.location.href = `/checkout?product=${productId}&username=${minecraftUsername}&price=${productPrice}`;
+        }, 1500);
+      });
+    }
+  });
+</script>
+
+<style>
+  :root {
+    /* Discord-inspired colors */
+    --background: #23272A;
+    --bg-secondary: #2C2F33;
+    --bg-light: #36393F;
+    
+    /* Text colors */
+    --text-normal: #DCDDDE;
+    --text-muted: #8e9297;
+    --text-heading: #FFFFFF;
+    
+    /* Button colors */
+    --button-primary: #5865F2; /* Discord blurple */
+    --button-primary-hover: #4752c4;
+    --button-secondary: #4f545c;
+    --button-secondary-hover: #5d6269;
+    
+    /* Status colors */
+    --success-color: #43B581;
+    --error-color: #F04747;
+    
+    /* Border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+  }
+  
+  .page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 80vh;
+  }
+  
+  .purchase-container {
+    background-color: var(--bg-light);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
+    color: var(--text-heading);
+    text-align: center;
+    padding: 1.5rem;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .purchase-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    position: relative;
+  }
+  
+  .step.active {
+    background-color: var(--button-primary);
+    border-color: var(--button-primary);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(88, 101, 242, 0.2);
+  }
+  
+  .step.completed {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+  }
+  
+  .step-connector {
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 60px;
+  }
+  
+  .step.completed + .step-connector {
+    background-color: var(--success-color);
+  }
+  
+  .purchase-panel {
+    padding: 2rem;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .panel-title {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-heading);
+  }
+  
+  .product-summary {
+    background-color: var(--bg-secondary);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+  }
+  
+  .product-info {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .info-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .info-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+  
+  .info-value {
+    font-size: 1.1rem;
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+  
+  .form-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-normal);
+    font-size: 0.95rem;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-normal);
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--button-primary);
+    box-shadow: 0 0 0 2px rgba(88, 101, 242, 0.25);
+  }
+  
+  .input-error {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    min-height: 1.2em;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .primary-button, .secondary-button {
+    padding: 0.85rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    text-align: center;
+  }
+  
+  .primary-button {
+    background-color: var(--button-primary);
+    color: white;
+    border: none;
+  }
+  
+  .primary-button:hover:not(:disabled) {
+    background-color: var(--button-primary-hover);
+    transform: translateY(-2px);
+  }
+  
+  .primary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .secondary-button {
+    background-color: var(--button-secondary);
+    color: var(--text-normal);
+    border: none;
+  }
+  
+  .secondary-button:hover {
+    background-color: var(--button-secondary-hover);
+    transform: translateY(-2px);
+  }
+  
+  /* Character Preview */
+  .character-preview {
+    text-align: center;
+    padding: 1.5rem 0 2.5rem;
+  }
+  
+  .character-skin {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1rem;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  
+  .character-skin img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+  }
+  
+  .skin-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast);
+  }
+  
+  .skin-loading.active {
+    opacity: 1;
+  }
+  
+  .character-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+  
+  /* Spinner */
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--button-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  .spinner.large {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Redirect Loading */
+  .redirect-loading {
+    text-align: center;
+    padding: 3rem 0;
+  }
+  
+  .redirect-loading .spinner {
+    margin: 0 auto 1.5rem;
+  }
+  
+  .redirect-loading p {
+    color: var(--text-normal);
+    font-size: 1.1rem;
+  }
+  
+  /* Mobile Optimizations */
+  @media (max-width: 580px) {
+    .page-container {
+      padding: 1rem;
+    }
+    
+    .product-info {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .button-group {
+      flex-direction: column-reverse;
+    }
+    
+    .primary-button, .secondary-button {
+      ---
+    width: 100%;
+    text-align: center;
+    }
+  }

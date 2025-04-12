@@ -1,9 +1,7 @@
 import { loadTranslations } from '../../utils/language.js';
 
-// Note: Using uppercase "GET" (not lowercase "get")
 export async function GET({ request }) {
   try {
-    // Remove the 'c' character here that's causing syntax error
     const url = new URL(request.url);
     const lang = url.searchParams.get('lang') || 'en';
     
@@ -19,7 +17,7 @@ export async function GET({ request }) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600' // Cache for an hour
+        'Cache-Control': 'public, max-age=3600' 
       }
     });
   } catch (error) {

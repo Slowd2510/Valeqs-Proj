@@ -1,1134 +1,446 @@
 ---
-// Disable prerendering since we need access to request headers
-export const prerender = false;
-
+// filepath: c:\Users\schmi\Desktop\astros-1.0.0\Valeqs\dreary-doppler\src\pages\info.astro
 import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
 import { getLanguage, loadTranslations } from '../utils/language.js';
-import type { Translations } from '../types/translations.js';
 
-// Background slideshow images
-const screenshots = [
-  "/images/screenshots/info1.jpg",
-  "/images/screenshots/info2.jpg", 
-  "/images/screenshots/info3.jpg"
-];
-
-// Detect user language
+// Get language and translations
 const userLang = await getLanguage(Astro.request);
-const t = await loadTranslations(userLang) as Translations;
-
-// Server stats
-const serverStats = {
-  onlinePlayers: "132",
-  registeredPlayers: "5,246",
-  uptime: "99.9%"
-};
-
-// Staff members
-const staffMembers = {
-  owner: [
-    {
-      name: "Valeqs",
-      avatar: "/images/avatars/valemaster.png",
-      role: t.staffRoles?.owner || "Owner"
-    }
-  ],
-  admins: [
-    {
-      name: "XXXXX",
-      avatar: "/images/avatars/craftwizard.png",
-      role: t.staffRoles?.administrators || "Administrator"
-    },
-    {
-      name: "XXXX",
-      avatar: "/images/avatars/blockbaron.png", 
-      role: t.staffRoles?.administrators || "Administrator"
-    }
-  ],
-  mods: [
-    {
-      name: "PixelPatrol",
-      avatar: "/images/avatars/pixelpatrol.png",
-      role: t.staffRoles?.moderators || "Moderator"
-    },
-    {
-      name: "CubeKeeper",
-      avatar: "/images/avatars/cubekeeper.png",
-      role: t.staffRoles?.moderators || "Moderator"
-    },
-    {
-      name: "MineMonitor",
-      avatar: "/images/avatars/minemonitor.png",
-      role: t.staffRoles?.moderators || "Moderator"
-    }
-  ],
-  helpers: [
-    {
-      name: "AideAssist",
-      avatar: "/images/avatars/aideassist.png",
-      role: t.staffRoles?.helpers || "Helper"
-    },
-    {
-      name: "HelpfulHand",
-      avatar: "/images/avatars/helpfulhand.png",
-      role: t.staffRoles?.helpers || "Helper"
-    }
-  ]
-};
+const t = await loadTranslations(userLang);
 ---
 
-<Layout title="Valeqs - Server Info">
-  <!-- Background Slideshow -->
-  <div class="background-slideshow">
-    {screenshots.map((img, index) => (
-      <div class="slide" data-index={index} style={`background-image: url(${img})`}></div>
-    ))}
-    <div class="overlay"></div>
-  </div>
-  
-  <div class="page-container">
-    <!-- Navigation -->
-    <Navbar activePage="info" />
+<Layout title={userLang === 'de' ? "Server Info | VALEQS" : "Server Info | VALEQS"} activePage="info">
+  <div class="info-container">
+    <h1 class="page-title" style="font-size: 2.8rem; margin-bottom: 3rem;">Wichtige Befehle & Infos</h1>
     
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <h1>{t.info.title}</h1>
-        <p>{t.info.subtitle}</p>
-      </div>
-    </section>
-    
-    <!-- Welcome Section -->
-    <section class="welcome-section">
-      <div class="section-header">
-        <h2>{t.info.welcome}</h2>
-      </div>
-      
-      <div class="welcome-content">
-        <div class="welcome-text">
-          <p>{t.info.welcomeText1}</p>
-          <p>{t.info.welcomeText2}</p>
+    <!-- Main content -->
+    <div class="command-sections">
+      <!-- Basis-Schutz mit Claims -->
+      <section class="command-card">
+        <div class="card-header">
+          <h2>Basis-Schutz mit Claims</h2>
         </div>
-        
-        <div class="server-quick-stats">
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="currentColor" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"/>
-                <path fill="currentColor" d="M12,6a1,1,0,0,0-1,1v5a1,1,0,0,0,.293.707l3,3a1,1,0,0,0,1.414-1.414L13,11.586V7A1,1,0,0,0,12,6Z"/>
-              </svg>
+        <div class="card-content">
+          <p>Ihr habt keinen Bock mehr auf Griefer oder Diebe? Schützt eure Basis mit Claims!</p>
+          <p>Drücke F3+G, um die Chunks (Bereiche) zu sehen, die du für dich beanspruchen kannst.</p>
+          
+          <div class="steps">
+            <div class="step">
+              <h3>Schritt 1: Claim erstellen</h3>
+              <div class="command-item">
+                <code>/claim</code>
+                <span>Erstelle einen Claim für dich.</span>
+              </div>
             </div>
-            <div class="stat-value">{serverStats.uptime}</div>
-            <div class="stat-label">{t.info.serverUptime}</div>
+            
+            <div class="step">
+              <h3>Schritt 2: Claim benennen</h3>
+              <div class="command-item">
+                <code>/claim setname claim-0 [Name]</code>
+                <span>Gib deinem Claim einen Namen.</span>
+              </div>
+            </div>
+            
+            <div class="step">
+              <h3>Schritt 3+: Claim verwalten</h3>
+              <div class="command-list">
+                <div class="command-item">
+                  <code>/claim addchunk</code>
+                  <span>Füge einen Chunk zu deinem Claim hinzu.</span>
+                </div>
+                <div class="command-item">
+                  <code>/claim delchunk</code>
+                  <span>Lösche einen Chunk aus deinem Claim.</span>
+                </div>
+                <div class="command-item">
+                  <code>/claim settings</code>
+                  <span>Stelle die Rechte von Besuchern und Mitgliedern ein.</span>
+                </div>
+                <div class="command-item">
+                  <code>/claim map</code>
+                  <span>Sieh dir den geclaimten Bereich an.</span>
+                </div>
+                <div class="command-item">
+                  <code>/claim add [Spieler]</code>
+                  <span>Füge ein Mitglied zu deinem Claim hinzu.</span>
+                </div>
+                <div class="command-item">
+                  <code>/claim remove [Spieler]</code>
+                  <span>Entferne ein Mitglied aus deinem Claim.</span>
+                </div>
+                <div class="command-item">
+                  <code>/unclaim [Name]</code>
+                  <span>Löse deinen Claim auf.</span>
+                </div>
+                <div class="command-item">
+                  <code>/claim tp [Name]</code>
+                  <span>Teleportiere dich zu deinem Claim.</span>
+                </div>
+              </div>
+            </div>
           </div>
           
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="currentColor" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"/>
-                <circle fill="currentColor" cx="12" cy="10" r="3"/>
-                <path fill="currentColor" d="M12,14c-3.31,0-6,1.79-6,4v1H18v-1C18,15.79,15.31,14,12,14Z"/>
-              </svg>
-            </div>
-            <div class="stat-value">{serverStats.onlinePlayers}</div>
-            <div class="stat-label">{t.info.onlinePlayers}</div>
+          <div class="info-box">
+            <h3>Wichtige Regeln für Claims</h3>
+            <p><strong>Maximal 1 Claim mit 25 Chunks pro Spieler</strong></p>
           </div>
           
-          <div class="stat-card">
-            <div class="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                <path fill="currentColor" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"/>
-                <path fill="currentColor" d="M17,9H7a1,1,0,0,0,0,2H17a1,1,0,0,0,0-2Z"/>
-                <path fill="currentColor" d="M17,13H7a1,1,0,0,0,0,2H17a1,1,0,0,0,0-2Z"/>
-              </svg>
-            </div>
-            <div class="stat-value">{serverStats.registeredPlayers}</div>
-            <div class="stat-label">{t.info.registeredPlayers}</div>
+          <div class="warning-box">
+            <p><strong>Nach 14 Tagen Offline-Zeit löst sich der Claim automatisch auf!</strong></p>
+          </div>
+          
+          <div class="upgrade-note">
+            <p>Erhalte mehr Claims, Chunks und Offline-Zeit mit einem Rang</p>
+            <a href="/ranks" class="rank-button">SHOP</a>
           </div>
         </div>
-      </div>
-    </section>
-    
-    <!-- Features Section -->
-    <section class="features-section">
-      <div class="section-header">
-        <h2>{t.info.featuresTitle}</h2>
-      </div>
-      
-      <div class="features-grid">
-        <div class="feature-card">
-          <h3>{t.features.survival.title}</h3>
-          <p>{t.features.survival.description}</p>
+      </section>
+
+      <!-- Teleportation & Sicherheit -->
+      <section class="command-card">
+        <div class="card-header">
+          <h2>Teleportation & Sicherheit</h2>
         </div>
-        
-        <div class="feature-card">
-          <h3>{t.features.economy.title}</h3>
-          <p>{t.features.economy.description}</p>
-        </div>
-        
-        <div class="feature-card">
-          <h3>{t.features.towny.title}</h3>
-          <p>{t.features.towny.description}</p>
-        </div>
-        
-        <div class="feature-card">
-          <h3>{t.features.mcmmo.title}</h3>
-          <p>{t.features.mcmmo.description}</p>
-        </div>
-        
-        <div class="feature-card">
-          <h3>{t.features.customEnchants.title}</h3>
-          <p>{t.features.customEnchants.description}</p>
-        </div>
-        
-        <div class="feature-card">
-          <h3>{t.features.customEvents.title}</h3>
-          <p>{t.features.customEvents.description}</p>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Server Specifications Section -->
-    <section class="specs-section">
-      <div class="section-header">
-        <h2>{t.info.serverSpecifications}</h2>
-      </div>
-      
-      <div class="specs-container">
-        <div class="spec-item">
-          <div class="spec-label">{t.serverSpecs.hardware.label}</div>
-          <div class="spec-value">{t.serverSpecs.hardware.value}</div>
-        </div>
-        
-        <div class="spec-item">
-          <div class="spec-label">{t.serverSpecs.uptime.label}</div>
-          <div class="spec-value">{t.serverSpecs.uptime.value}</div>
-        </div>
-        
-        <div class="spec-item">
-          <div class="spec-label">{t.serverSpecs.location.label}</div>
-          <div class="spec-value">{t.serverSpecs.location.value}</div>
-        </div>
-        
-        <div class="spec-item">
-          <div class="spec-label">{t.serverSpecs.version.label}</div>
-          <div class="spec-value">{t.serverSpecs.version.value}</div>
-        </div>
-        
-        <div class="spec-item">
-          <div class="spec-label">{t.serverSpecs.slots.label}</div>
-          <div class="spec-value">{t.serverSpecs.slots.value}</div>
-        </div>
-        
-        <div class="spec-item">
-          <div class="spec-label">{t.serverSpecs.antiCheat.label}</div>
-          <div class="spec-value">{t.serverSpecs.antiCheat.value}</div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Server Rules Section -->
-    <section class="rules-section">
-      <div class="section-header">
-        <h2>{t.info.serverRules}</h2>
-      </div>
-      
-      <div class="rules-note">
-        <p>{t.info.rulesNote}</p>
-      </div>
-      
-      <div class="rules-grid">
-        <div class="rule-card">
-          <h3>{t.rules.respectful.title}</h3>
-          <p>{t.rules.respectful.description}</p>
-        </div>
-        
-        <div class="rule-card">
-          <h3>{t.rules.noGriefing.title}</h3>
-          <p>{t.rules.noGriefing.description}</p>
-        </div>
-        
-        <div class="rule-card">
-          <h3>{t.rules.noCheating.title}</h3>
-          <p>{t.rules.noCheating.description}</p>
-        </div>
-        
-        <div class="rule-card">
-          <h3>{t.rules.pvpGuidelines.title}</h3>
-          <p>{t.rules.pvpGuidelines.description}</p>
-        </div>
-        
-        <div class="rule-card">
-          <h3>{t.rules.appropriateBuilds.title}</h3>
-          <p>{t.rules.appropriateBuilds.description}</p>
-        </div>
-        
-        <div class="rule-card">
-          <h3>{t.rules.staffDecisions.title}</h3>
-          <p>{t.rules.staffDecisions.description}</p>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Staff Team Section -->
-    <section class="staff-section">
-      <div class="section-header">
-        <h2>{t.info.staffTeam}</h2>
-      </div>
-      
-      <div class="staff-group">
-        <h3>{t.staffRoles.owner}</h3>
-        <div class="staff-members">
-          {staffMembers.owner.map(member => (
-            <div class="staff-card">
-              <div class="staff-avatar">
-                <img src={member.avatar} alt={member.name} />
-              </div>
-              <div class="staff-name">{member.name}</div>
-              <div class="staff-role">{member.role}</div>
+        <div class="card-content">
+          <div class="command-list">
+            <div class="command-item">
+              <code>/tpa [Name]</code>
+              <span>Teleportiere dich zu einem Spieler.</span>
             </div>
-          ))}
-        </div>
-      </div>
-      
-      <div class="staff-group">
-        <h3>{t.staffRoles.administrators}</h3>
-        <div class="staff-members">
-          {staffMembers.admins.map(member => (
-            <div class="staff-card">
-              <div class="staff-avatar">
-                <img src={member.avatar} alt={member.name} />
-              </div>
-              <div class="staff-name">{member.name}</div>
-              <div class="staff-role">{member.role}</div>
+            <div class="command-item">
+              <code>/tpahere [Name]</code>
+              <span>Teleportiere einen Spieler zu dir.</span>
             </div>
-          ))}
-        </div>
-      </div>
-      
-      <div class="staff-group">
-        <h3>{t.staffRoles.moderators}</h3>
-        <div class="staff-members">
-          {staffMembers.mods.map(member => (
-            <div class="staff-card">
-              <div class="staff-avatar">
-                <img src={member.avatar} alt={member.name} />
-              </div>
-              <div class="staff-name">{member.name}</div>
-              <div class="staff-role">{member.role}</div>
+            <div class="command-item">
+              <code>/tpaccept</code>
+              <span>Nehme eine Teleportanfrage an (Alias: /tpyes).</span>
             </div>
-          ))}
-        </div>
-      </div>
-      
-      <div class="staff-group">
-        <h3>{t.staffRoles.helpers}</h3>
-        <div class="staff-members">
-          {staffMembers.helpers.map(member => (
-            <div class="staff-card">
-              <div class="staff-avatar">
-                <img src={member.avatar} alt={member.name} />
-              </div>
-              <div class="staff-name">{member.name}</div>
-              <div class="staff-role">{member.role}</div>
+            <div class="command-item">
+              <code>/tpadecline</code>
+              <span>Lehne eine Teleportanfrage ab (Alias: /tpano, /tpdeny).</span>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-    
-    <!-- How to Join Section -->
-    <section class="join-section">
-      <div class="section-header">
-        <h2>{t.info.howToJoinSection}</h2>
-      </div>
-      
-      <div class="server-address">
-        <h3>{t.info.serverAddress}</h3>
-        <div class="address-display">
-          <div class="address-value">valeqs.de</div>
-          <button class="copy-button" id="copy-address">
-            {t.server.copy}
-          </button>
-        </div>
-      </div>
-      
-      <div class="join-steps">
-        <div class="step-card">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>{t.joinSteps.step1.title}</h3>
-            <p>{t.joinSteps.step1.description}</p>
+            <div class="command-item">
+              <code>/spawn</code>
+              <span>Teleportiere dich zum Spawn.</span>
+            </div>
+          </div>
+          
+          <div class="info-box security-note">
+            <h3>Hinweis zur Sicherheit</h3>
+            <p>Passt auf, zu wem ihr euch teleportiert! Manche Spieler stellen Fallen auf!</p>
+          </div>
+          
+          <div class="info-box bedrock-note">
+            <h3>Bedrock-Spieler</h3>
+            <p><strong>Wichtiger Hinweis:</strong> Bedrock-Spieler müssen /tpaccept und /tpadeny manuell eingeben, da die Auswahl nicht klickbar ist.</p>
           </div>
         </div>
-        
-        <div class="step-card">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>{t.joinSteps.step2.title}</h3>
-            <p>{t.joinSteps.step2.description}</p>
+      </section>
+
+      <!-- Weitere nützliche Befehle -->
+      <section class="command-card">
+        <div class="card-header">
+          <h2>Weitere nützliche Befehle</h2>
+        </div>
+        <div class="card-content">
+          <div class="command-list">
+            <div class="command-item">
+              <code>/sethome, /home</code>
+              <span>Setze und nutze ein Home, zu dem du dich teleportieren kannst.</span>
+            </div>
+            <div class="command-item">
+              <code>/delhome</code>
+              <span>Lösche ein Home.</span>
+            </div>
+            <div class="command-item">
+              <code>/togglemsg</code>
+              <span>Deaktiviere private Nachrichten.</span>
+            </div>
+            <div class="command-item">
+              <code>/toggleignore</code>
+              <span>Blockiere Teleportanfragen.</span>
+            </div>
+            <div class="command-item">
+              <code>/ignore [Spieler]</code>
+              <span>Erhalte keine privaten Nachrichten mehr von einem bestimmten Spieler.</span>
+            </div>
           </div>
         </div>
-        
-        <div class="step-card">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>{t.joinSteps.step3.title}</h3>
-            <p>{t.joinSteps.step3.description}</p>
-          </div>
-        </div>
-        
-        <div class="step-card">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <h3>{t.joinSteps.step4.title}</h3>
-            <p>{t.joinSteps.step4.description}</p>
-          </div>
-        </div>
-      </div>
+      </section>
       
-      <div class="discord-section">
-        <h3>{t.info.joinDiscord}</h3>
-        <p>{t.info.joinDiscordText}</p>
-        
-        <a href="https://discord.gg/valeqs" class="discord-button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="24" height="24">
-            <path fill="currentColor" d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.86,1.86,0,0,0-1.019-2.588,321.173,321.173,0,0,1-45.868-21.853,1.885,1.885,0,0,1-.185-3.126c3.082-2.309,6.166-4.711,9.109-7.137a1.819,1.819,0,0,1,1.9-.256c96.229,43.917,200.41,43.917,295.5,0a1.812,1.812,0,0,1,1.924.233c2.944,2.426,6.027,4.851,9.132,7.16a1.884,1.884,0,0,1-.162,3.126,301.407,301.407,0,0,1-45.89,21.83,1.875,1.875,0,0,0-1,2.611,391.055,391.055,0,0,0,30.014,48.815,1.864,1.864,0,0,0,2.063.7A486.048,486.048,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/>
-          </svg>
-          {t.discord}
-        </a>
-      </div>
-    </section>
+      <!-- Images Section Removed -->
+      
+    </div>
     
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div class="footer-content">
-        <div class="footer-info">
-          <span>{t.footer.copyright}</span>
-          <span>{t.footer.disclaimer}</span>
-        </div>
-        
-        <div class="footer-links">
-          <a href="/terms">{t.footer.terms}</a>
-          <a href="/privacy">{t.footer.privacy}</a>
-          <a href="/rules">{t.footer.rules}</a>
-        </div>
-      </div>
-    </footer>
+    <div class="server-ip">
+      <span>Server-IP:</span>
+      <code>valeqs.de</code>
+      <button id="copy-ip" class="copy-button">Kopieren</button>
+    </div>
   </div>
 </Layout>
 
 <script>
-  // Define translations property on Window interface
-  declare global {
-    interface Window {
-      translations?: {
-        server?: {
-          copy?: string;
-          copied?: string;
-        };
-        [key: string]: any;
-      };
-    }
-  }
-
-  // Background Slideshow Functionality
   document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('.slide');
-    let currentSlide = 0;
+    const copyButton = document.getElementById('copy-ip');
     
-    // Initialize: hide all slides except the first one
-    slides.forEach((slide, index) => {
-      if (index !== 0) {
-        slide.classList.add('inactive');
-      }
-    });
-    
-    function rotateSlides() {
-      // Fade out current slide
-      slides[currentSlide].classList.add('fade-out');
-      
-      setTimeout(() => {
-        // Hide current slide
-        slides[currentSlide].classList.add('inactive');
-        slides[currentSlide].classList.remove('fade-out');
-        
-        // Move to next slide
-        currentSlide = (currentSlide + 1) % slides.length;
-        
-        // Show and fade in next slide
-        slides[currentSlide].classList.remove('inactive');
-        slides[currentSlide].classList.add('fade-in');
-        
-        setTimeout(() => {
-          slides[currentSlide].classList.remove('fade-in');
-        }, 1000);
-      }, 1000);
-    }
-    
-    // Rotate slides every 8 seconds
-    setInterval(rotateSlides, 8000);
-    
-    // Copy server address functionality
-    const copyButton = document.getElementById('copy-address');
-    if (copyButton) {
-      copyButton.addEventListener('click', () => {
-        const addressValue = 'valeqs.de';
-        navigator.clipboard.writeText(addressValue)
-          .then(() => {
-            // Get language from HTML element
-            const userLanguage = document.documentElement.lang || 'en';
-            console.log('Using language for copy button:', userLanguage);
-            
-            const originalText = copyButton.textContent || '';
-            
-            // Try to get translations from global state first if available
-            if (window.translations && window.translations.server && window.translations.server.copied) {
-              copyButton.textContent = window.translations.server.copied;
-            } else {
-              // Fallback to API request
-              fetch(`/api/translations?lang=${userLanguage}`)
-                .then(response => {
-                  if (!response.ok) throw new Error('Translation fetch failed');
-                  return response.json();
-                })
-                .then(translations => {
-                  copyButton.textContent = translations?.server?.copied || 'Copied!';
-                  // Store translations globally for future use
-                  window.translations = translations;
-                })
-                .catch(err => {
-                  console.error('Translation fetch error:', err);
-                  copyButton.textContent = 'Copied!';
-                });
-            }
-            
-            // Reset button text after 2 seconds
-            setTimeout(() => {
-              if (window.translations && window.translations.server && window.translations.server.copy) {
-                copyButton.textContent = window.translations.server.copy;
-              } else {
-                copyButton.textContent = originalText;
-              }
-            }, 2000);
-          })
-          .catch(err => {
-            console.error('Could not copy text: ', err);
-          });
+    copyButton?.addEventListener('click', () => {
+      navigator.clipboard.writeText('valeqs.de').then(() => {
+        // Visual feedback
+        copyButton.textContent = 'Kopiert!';
+        setTimeout(() => copyButton.textContent = 'Kopieren', 2000);
       });
-    }
+    });
   });
 </script>
 
 <style>
-  /* Variables - Match with other pages */
-  :root {
-    /* Discord-inspired colors */
-    --background: #23272A;
-    --bg-secondary: #2C2F33;
-    --bg-light: #36393F;
-    
-    /* Text colors */
-    --text-normal: #DCDDDE;
-    --text-muted: #8e9297;
-    --text-heading: #FFFFFF;
-    
-    /* Button colors */
-    --button-primary: #5865F2; /* Discord blurple */
-    --button-primary-hover: #4752c4;
-    --button-secondary: #4f545c;
-    --button-secondary-hover: #5d6269;
-    
-    /* Status colors */
-    --status-online: #3ba55c;
-    --status-offline: #ed4245;
-    
-    /* Border radius */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    
-    /* Transitions */
-    --transition-fast: 0.15s ease;
-    --transition-normal: 0.25s ease;
-  }
-  
-  /* Background Slideshow */
-  .background-slideshow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-  }
-  
-  .slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    transition: opacity 1s ease;
-  }
-  
-  .slide.inactive {
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  .slide.fade-in {
-    animation: fadeIn 1s forwards;
-  }
-  
-  .slide.fade-out {
-    animation: fadeOut 1s forwards;
-  }
-  
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at center, rgba(32, 34, 37, 0.85) 0%, rgba(15, 17, 19, 0.95) 100%);
-    z-index: -1;
-  }
-  
-  /* Page Container */
-  .page-container {
-    width: 100%;
-    max-width: 1000px;
+  .info-container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    padding: 2rem 1.5rem 4rem;
   }
   
-  /* Hero Section */
-  .hero-section {
-    padding: 3rem 0;
+  .page-title {
+    font-size: 2.2rem;
+    color: var(--light);
     text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .hero-content h1 {
-    font-size: 2.5rem;
-    color: var(--text-heading);
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-  }
-  
-  .hero-content p {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  /* Section Headers */
-  .section-header {
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  .section-header h2 {
-    font-size: 1.75rem;
-    color: var(--text-heading);
-    font-weight: 700;
-    margin: 0;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 0.75rem;
-  }
-  
-  .section-header h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: var(--button-primary);
-    border-radius: var(--radius-sm);
-  }
-  
-  /* Welcome Section */
-  .welcome-section {
-    margin-bottom: 4rem;
-  }
-  
-  .welcome-content {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  .welcome-text p {
-    color: var(--text-normal);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-  
-  .server-quick-stats {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-  }
-  
-  .stat-card {
-    background-color: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    text-align: center;
-    min-width: 150px;
-    flex-grow: 1;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  }
-  
-  .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .stat-icon {
-    color: var(--button-primary);
-    margin-bottom: 1rem;
-  }
-  
-  .stat-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-heading);
-    margin-bottom: 0.5rem;
-  }
-  
-  .stat-label {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-  
-  /* Features Section */
-  .features-section {
-    margin-bottom: 4rem;
-  }
-  
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .feature-card {
-    background-color: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  }
-  
-  .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .feature-card h3 {
-    font-size: 1.25rem;
-    color: var(--text-heading);
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  
-  .feature-card p {
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-size: 0.95rem;
-  }
-  
-  /* Server Specifications Section */
-  .specs-section {
-    margin-bottom: 4rem;
-  }
-  
-  .specs-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .spec-item {
-    background-color: var(--bg-secondary);
-    padding: 1.25rem;
-    border-radius: var(--radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  .spec-label {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-  
-  .spec-value {
-    font-size: 1.1rem;
-    color: var(--text-heading);
-    font-weight: 600;
-  }
-  
-  /* Rules Section */
-  .rules-section {
-    margin-bottom: 4rem;
-  }
-  
-  .rules-note {
-    background-color: var(--bg-secondary);
-    padding: 1.25rem;
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--button-primary);
-    margin-bottom: 2rem;
-  }
-  
-  .rules-note p {
-    color: var(--text-normal);
-    line-height: 1.6;
-    margin: 0;
-  }
-  
-  .rules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .rule-card {
-    background-color: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform var(--transition-normal), box-shadow var (--transition-normal);
-  }
-  
-  .rule-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .rule-card h3 {
-    font-size: 1.25rem;
-    color: var(--text-heading);
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  
-  .rule-card p {
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-size: 0.95rem;
-  }
-  
-  /* Staff Section */
-  .staff-section {
-    margin-bottom: 4rem;
-  }
-  
-  .staff-group {
     margin-bottom: 2.5rem;
   }
   
-  .staff-group h3 {
-    font-size: 1.5rem;
-    color: var(--text-heading);
-    margin-bottom: 1.5rem;
-    text-align: center;
-    font-weight: 600;
-  }
-  
-  .staff-members {
+  .command-sections {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 2rem;
   }
   
-  .staff-card {
-    background-color: var (--bg-secondary);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    text-align: center;
-    width: 150px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  }
-  
-  .staff-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .staff-avatar {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1rem;
-    border-radius: 50%;
+  .command-card {
+    background-color: rgba(30, 33, 36, 0.7);
+    border-radius: 8px;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
-  .staff-avatar img {
+  .card-header {
+    background-color: rgba(40, 43, 48, 0.8);
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .card-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--light);
+  }
+  
+  .card-content {
+    padding: 1.5rem;
+  }
+  
+  .card-content p {
+    color: var(--light);
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+  
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .step h3 {
+    font-size: 1.1rem;
+    color: var(--light);
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .command-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .command-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .command-item code {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: var(--light);
+    font-family: 'Courier New', monospace;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+  
+  .command-item span {
+    color: var(--mid);
+    font-size: 0.95rem;
+    padding-top: 0.4rem;
+  }
+  
+  .info-box, .warning-box {
+    background-color: rgba(40, 44, 52, 0.5);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+  
+  .info-box h3 {
+    font-size: 1.1rem;
+    color: var(--light);
+    margin: 0 0 0.75rem 0;
+  }
+  
+  .info-box p, .warning-box p {
+    margin: 0;
+  }
+  
+  .warning-box {
+    border-left: 4px solid rgba(255, 100, 100, 0.5);
+  }
+  
+  .upgrade-note {
+    background-color: rgba(30, 33, 36, 0.7);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(123, 83, 255, 0.2);
+  }
+  
+  .upgrade-note p {
+    margin-bottom: 0.75rem;
+  }
+  
+  .rank-button {
+    display: inline-block;
+    background-color: rgba(123, 83, 255, 0.2);
+    color: var(--light);
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  
+  .rank-button:hover {
+    background-color: rgba(123, 83, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Styles for Images Section Removed */
+  /*
+  .images-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .image-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 180px;
+  }
+  
+  .image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s ease;
   }
   
-  .staff-name {
-    font-size: 1.1rem;
-    color: var(--text-heading);
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+  .image-container:hover img {
+    transform: scale(1.05);
   }
   
-  .staff-role {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-  }
-  
-  /* Join Section */
-  .join-section {
-    margin-bottom: 4rem;
-  }
-  
-  .server-address {
+  .image-container h3 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.6rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--light);
     text-align: center;
-    margin-bottom: 3rem;
   }
-  
-  .server-address h3 {
-    font-size: 1.5rem;
-    color: var(--text-heading);
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  
- 
-.address-display {
-  display: inline-flex;
-  align-items: center;
-  background-color: var(--bg-secondary);
-  border-radius: var(--radius-md);
-  padding: 0.75rem 1rem;
-  margin: 0 auto;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-    
-    .address-value {
-    color: var(--text-heading);
-    font-size: 1.1rem;
-    font-weight: 600;
-    font-family: monospace;
-    margin-right: 1rem;
-    }
-    
-    .copy-button {
-    background-color: var(--button-secondary);
-    color: var(--text-normal);
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color var(--transition-fast);
-    }
-    
-    .copy-button:hover {
-    background-color: var(--button-secondary-hover);
-    }
-    
-    .join-steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-    }
-    
-    .step-card {
-    background-color: var(--bg-secondary);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    display: flex;
-    gap: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .step-number {
-    background-color: var(--button-primary);
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+  */
+
+  .server-ip {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    flex-shrink: 0;
-    }
-    
-    .step-content h3 {
-    color: var(--text-heading);
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    }
-    
-    .step-content p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    }
-    
-    .discord-section {
-    text-align: center;
-    background-color: var(--bg-secondary);
-    padding: 2rem;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .discord-section h3 {
-    color: var(--text-heading);
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    }
-    
-    .discord-section p {
-    color: var(--text-muted);
-    margin-bottom: 1.5rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    }
-    
-    .discord-button {
-    display: inline-flex;
-    align-items: center;
     gap: 0.75rem;
-    background-color: var(--button-primary);
-    color: white;
-    text-decoration: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    transition: background-color var(--transition-fast);
-    }
-    
-    .discord-button:hover {
-    background-color: var(--button-primary-hover);
-    }
-    
-    /* Footer */
-    .site-footer {
-    margin-top: auto;
-    padding: 2rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    }
-    
-    .footer-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+    margin-top: 3rem;
     text-align: center;
-    }
-    
-    .footer-info span {
-    color: var(--text-muted);
+    background-color: rgba(40, 43, 48, 0.8);
+    padding: 1rem;
+    border-radius: 6px;
+    display: inline-flex;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .server-ip span {
+    color: var(--mid);
+  }
+  
+  .server-ip code {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    color: var(--light);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    user-select: all;
+  }
+  
+  .copy-button {
+    background-color: rgba(80, 85, 90, 0.4);
+    border: none;
+    color: var(--light);
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
     font-size: 0.9rem;
-    }
-    
-    .footer-links {
-    display: flex;
-    gap: 1.5rem;
-    }
-    
-    .footer-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color var(--transition-fast);
-    }
-    
-    .footer-links a:hover {
-    color: var(--text-normal);
-    }
-    
-    /* Animations */
-    @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-    }
-    
-    @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-    .hero-content h1 {
-      font-size: 2rem;
-    }
-    
-    .server-quick-stats {
+    transition: background-color 0.2s ease;
+  }
+  
+  .copy-button:hover {
+    background-color: rgba(100, 105, 110, 0.6);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .command-item {
       flex-direction: column;
-      align-items: center;
-      gap: 1rem;
+      gap: 0.4rem;
     }
     
-    .stat-card {
-      width: 100%;
-      max-width: 280px;
+    .command-item span {
+      padding-top: 0;
     }
     
-    .features-grid,
-    .specs-container,
-    .rules-grid,
-    .join-steps {
+    .server-ip {
+      flex-direction: column;
+      padding: 1rem 2rem;
+    }
+    
+    /* Removed responsive styles for images section */
+    /*
+    .images-section {
       grid-template-columns: 1fr;
     }
-    
-    .staff-card {
-      width: 130px;
-    }
-    
-    .staff-avatar {
-      width: 70px;
-      height: 70px;
-    }
-    
-    .address-display {
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .address-value {
-      margin-right: 0;
-    }
-    }
-  </style>
+    */
+  }
+</style>
