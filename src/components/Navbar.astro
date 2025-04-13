@@ -10,10 +10,10 @@ const { activePage = "home" } = Astro.props;
 
 // Navigationspunkte mit Übersetzungen
 const navItems = [
-  { name: lang === 'de' ? 'Startseite' : 'Home', path: lang === 'de' ? '/de/' : '/', id: "home" },
-  { name: 'Info', path: lang === 'de' ? '/de/info' : '/info', id: "info" },
-  { name: lang === 'de' ? 'Nutzungsbedingungen' : 'Terms', path: lang === 'de' ? '/de/terms' : '/terms', id: "terms" },
-  { name: lang === 'de' ? 'Kontakt' : 'Contact', path: lang === 'de' ? '/de/contact' : '/contact', id: "contact" }
+  { name: lang === 'de' ? 'Startseite' : 'Home', path: '/', id: "home" },
+  { name: 'Info', path: '/info', id: "info" },
+  { name: lang === 'de' ? 'Nutzungsbedingungen' : 'Terms', path: '/terms', id: "terms" },
+  { name: lang === 'de' ? 'Kontakt' : 'Contact', path: '/contact', id: "contact" }
 ];
 
 const ranksItem = { name: lang === 'de' ? 'Ränge' : 'Ranks', path: "https://shop.valeqs.de", id: "ranks" };
